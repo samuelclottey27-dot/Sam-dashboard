@@ -519,6 +519,31 @@
   .pin-forgot { margin-top: 28px; font-size: 12px; color: var(--muted); text-align: center; line-height: 1.8; }
   .pin-forgot span { color: var(--gold); font-weight: 600; cursor: pointer; text-decoration: underline; }
 
+
+  /* Income edit overlay */
+  #income-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    z-index: 300; display: flex; align-items: flex-end;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  #income-overlay.open { opacity: 1; pointer-events: all; }
+  #income-sheet {
+    width: 100%; background: #0d1f10;
+    border-top: 2px solid #F9A82570; border-radius: 20px 20px 0 0;
+    padding: 20px 20px calc(20px + var(--safe-bottom));
+    transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  #income-overlay.open #income-sheet { transform: translateY(0); }
+  .income-sheet-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .income-sheet-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+  #income-input {
+    width: 100%; background: rgba(249,168,37,0.1);
+    border: 2px solid var(--gold); border-radius: 12px;
+    color: var(--gold); font-size: 28px; font-weight: 800;
+    padding: 14px 16px; text-align: center; outline: none;
+    font-family: inherit; letter-spacing: -0.5px; margin-bottom: 14px;
+  }
+
   /* Install prompt */
   #install-banner {
     position: fixed; bottom: 0; left: 0; right: 0;
@@ -576,9 +601,9 @@
       <div class="logo">🏦</div>
       <div class="header-title">Sam's Financial Dashboard</div>
     </div>
-    <div class="balance-chip">
-      <div class="balance-label">Balance</div>
-      <div class="balance-value" id="header-balance" style="color:#F9A825">₵10,000</div>
+    <div class="balance-chip" onclick="openIncomeEdit()" style="cursor:pointer;position:relative">
+      <div class="balance-label">Balance &nbsp;<span style="font-size:9px;opacity:0.6">✏️ Income</span></div>
+      <div class="balance-value" id="header-balance" style="color:#F9A825">—</div>
     </div>
   </div>
 
@@ -617,6 +642,20 @@
   </div>
 </div>
 
+
+<!-- Income edit overlay -->
+<div id="income-overlay" onclick="closeIncomeEdit(event)">
+  <div id="income-sheet" onclick="event.stopPropagation()">
+    <div class="income-sheet-label">Monthly Income</div>
+    <div class="income-sheet-title">Update your income (GHS)</div>
+    <input type="number" id="income-input" inputmode="decimal" placeholder="10000" min="0">
+    <div class="input-actions">
+      <button class="btn-cancel" onclick="closeIncomeEdit()">Cancel</button>
+      <button class="btn-save" onclick="saveIncome()">Update ₵</button>
+    </div>
+  </div>
+</div>
+
 <!-- Install banner -->
 <div id="install-banner" class="hidden">
   <div class="install-text">
@@ -630,7 +669,7 @@
 // ══════════════════════════════════════════════
 // DATA & STATE
 // ══════════════════════════════════════════════
-const INCOME = 10000;
+let INCOME = 10000; // mutable — user can update via header tap
 const C = {
   green:'#1B5E20', mid:'#2E7D32', light:'#4CAF50',
   gold:'#F9A825', goldl:'#FFD54F', muted:'#7a9e7a',
@@ -686,10 +725,10 @@ let STATE = {
   currentTab: 'overview',
 };
 
-try { const s = localStorage.getItem('sams_dash'); if (s) { const p = JSON.parse(s); STATE = {...STATE, ...p}; } } catch(e) {}
+try { const s = localStorage.getItem('sams_dash'); if (s) { const p = JSON.parse(s); STATE = {...STATE, ...p}; if (p.income) INCOME = p.income; } } catch(e) {}
 
 function save() {
-  try { localStorage.setItem('sams_dash', JSON.stringify({actuals:STATE.actuals, invMonth:STATE.invMonth, planIdx:STATE.planIdx})); } catch(e) {}
+  try { localStorage.setItem('sams_dash', JSON.stringify({actuals:STATE.actuals, invMonth:STATE.invMonth, planIdx:STATE.planIdx, income:INCOME})); } catch(e) {}
 }
 
 // ── Derived values ──
@@ -1472,6 +1511,38 @@ document.addEventListener('visibilitychange', () => {
 document.addEventListener('touchstart', resetLockTimer, { passive: true });
 
 initPin();
+
+
+// ══════════════════════════════════════════════
+// INCOME EDITOR
+// ══════════════════════════════════════════════
+function openIncomeEdit() {
+  if (!isUnlocked) return;
+  document.getElementById('income-input').value = INCOME;
+  const ov = document.getElementById('income-overlay');
+  ov.classList.add('open');
+  setTimeout(() => document.getElementById('income-input').focus(), 350);
+}
+
+function closeIncomeEdit(e) {
+  if (e && e.target !== document.getElementById('income-overlay')) return;
+  document.getElementById('income-overlay').classList.remove('open');
+}
+
+function saveIncome() {
+  const val = parseFloat(document.getElementById('income-input').value);
+  if (val > 0) {
+    INCOME = val;
+    save();
+    render();
+  }
+  document.getElementById('income-overlay').classList.remove('open');
+}
+
+document.getElementById('income-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveIncome();
+  if (e.key === 'Escape') closeIncomeEdit();
+});
 
 // ══════════════════════════════════════════════
 // INSTALL PROMPT
