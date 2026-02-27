@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sam's Finance">
+<meta name="theme-color" content="#070f09">
+<title>Sam's Financial Dashboard</title>
+
+<!-- PWA Manifest inline -->
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Sam%27s%20Financial%20Dashboard%22%2C%22short_name%22%3A%22Sam%27s%20Finance%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070f09%22%2C%22theme_color%22%3A%22%23070f09%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%2527http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%3D%270%200%20512%20512%2527%253E%253Crect%2520width%3D%2527512%2527%2520height%3D%2527512%2527%2520rx%3D%2527100%2527%2520fill%3D%2527%23070f09%2527%2F%253E%253Ctext%2520x%3D%2527256%2527%2520y%3D%2527340%2527%2520font-size%3D%2527300%2527%2520text-anchor%3D%2527middle%2527%253E%25F0%259F%258F%25A6%253C%2Ftext%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
+<!-- Apple touch icon (bank emoji on dark green) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%23070f09'/><text x='90' y='128' font-size='110' text-anchor='middle'>🏦</text></svg>">
+
+<style>
+  :root {
+    --bg: #070f09;
+    --card: #0d1f10;
+    --border: #1a3320;
+    --green: #1B5E20;
+    --midgreen: #2E7D32;
+    --lightgreen: #4CAF50;
+    --gold: #F9A825;
+    --goldlight: #FFD54F;
+    --golddim: #7B6000;
+    --text: #E8F5E9;
+    --muted: #7a9e7a;
+    --red: #EF5350;
+    --blue: #42A5F5;
+    --orange: #FFA726;
+    --purple: #CE93D8;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+
+  /* ── Layout Shell ── */
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: -webkit-fill-available;
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background mesh */
+  #app::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 10% 10%, #1B5E2018 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 90% 90%, #F9A82508 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Header ── */
+  #header {
+    flex-shrink: 0;
+    padding: 14px 16px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(7,15,9,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 10;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 10px; }
+
+  .logo {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, #F9A825, #2E7D32);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 16px #F9A82540;
+    flex-shrink: 0;
+  }
+
+  .header-title { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+
+  .balance-chip {
+    background: linear-gradient(135deg, #7B600040, #F9A82520);
+    border: 1px solid #F9A82540;
+    border-radius: 10px;
+    padding: 6px 12px;
+    text-align: right;
+  }
+  .balance-label { font-size: 9px; color: var(--gold); font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; }
+  .balance-value { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+
+  /* ── Scrollable Content ── */
+  #content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 14px 14px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Bottom Nav ── */
+  #nav {
+    flex-shrink: 0;
+    display: flex;
+    background: rgba(10,22,12,0.97);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding-bottom: calc(var(--safe-bottom) + 2px);
+    position: relative;
+    z-index: 10;
+  }
+
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px 6px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    gap: 3px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 2px;
+    background: var(--gold);
+    border-radius: 0 0 2px 2px;
+    transition: width 0.25s;
+  }
+  .nav-btn.active::before { width: 24px; }
+  .nav-btn .nav-icon { font-size: 20px; transition: transform 0.2s; }
+  .nav-btn.active .nav-icon { transform: scale(1.1); }
+  .nav-btn .nav-label { font-size: 10px; font-weight: 600; color: var(--muted); transition: color 0.2s; letter-spacing: 0.2px; }
+  .nav-btn.active .nav-label { color: var(--gold); }
+
+  /* ── Cards ── */
+  .card {
+    background: rgba(13,31,16,0.9);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(8px);
+  }
+  .card.glow { border-color: #F9A82550; box-shadow: 0 0 20px #F9A82515; }
+
+  .card-title {
+    font-size: 11px; font-weight: 700; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px;
+  }
+
+  /* ── KPI Grid ── */
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .kpi-card {
+    background: rgba(13,31,16,0.9);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .kpi-icon { font-size: 20px; margin-bottom: 5px; }
+  .kpi-value { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+  .kpi-label { font-size: 10px; color: var(--muted); margin-top: 2px; font-weight: 600; }
+
+  /* ── Progress Bar ── */
+  .prog-track { background: #1a2e1d; border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+
+  /* ── Section rows ── */
+  .section-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #1a332040;
+  }
+  .section-row:last-child { border-bottom: none; }
+  .section-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+  .section-icon-wrap {
+    width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+  .section-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .section-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+  .section-right { text-align: right; flex-shrink: 0; }
+  .section-amount { font-size: 14px; font-weight: 700; }
+  .section-pct { font-size: 10px; color: var(--muted); }
+
+  /* ── Budget Tab items ── */
+  .budget-item {
+    display: grid;
+    grid-template-columns: 1fr 72px 80px 60px;
+    gap: 4px;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid #1a332030;
+    font-size: 12px;
+  }
+  .budget-item:last-child { border-bottom: none; }
+  .item-name { color: var(--text); font-size: 12px; padding-right: 4px; }
+  .item-budget { text-align: right; color: var(--blue); font-weight: 600; }
+  .item-actual-btn {
+    background: rgba(249,168,37,0.1);
+    border: 1px dashed rgba(249,168,37,0.4);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 5px 4px;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .item-actual-btn.has-value { color: var(--gold); font-weight: 700; border-color: rgba(249,168,37,0.7); background: rgba(249,168,37,0.15); }
+  .item-diff { text-align: right; font-weight: 600; font-size: 11px; }
+  .diff-pos { color: var(--lightgreen); }
+  .diff-neg { color: var(--red); }
+  .diff-none { color: var(--muted); }
+
+  /* ── Section header in budget ── */
+  .budget-sec-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2px;
+  }
+  .bsh-left { display: flex; align-items: center; gap: 8px; }
+  .bsh-title { font-size: 13px; font-weight: 700; }
+  .bsh-total { font-size: 13px; font-weight: 800; }
+
+  /* ── Input overlay ── */
+  #input-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 100; display: flex; align-items: flex-end;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  #input-overlay.open { opacity: 1; pointer-events: all; }
+  #input-sheet {
+    width: 100%; background: #0d1f10;
+    border-top: 2px solid #F9A82550;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 20px calc(20px + var(--safe-bottom));
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  #input-overlay.open #input-sheet { transform: translateY(0); }
+  .input-sheet-title { font-size: 13px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  .input-sheet-label { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  #amount-input {
+    width: 100%; background: rgba(249,168,37,0.1);
+    border: 2px solid var(--gold); border-radius: 12px;
+    color: var(--gold); font-size: 28px; font-weight: 800;
+    padding: 14px 16px; text-align: center; outline: none;
+    font-family: inherit; letter-spacing: -0.5px;
+    margin-bottom: 14px;
+  }
+  .input-actions { display: flex; gap: 10px; }
+  .btn-cancel {
+    flex: 1; padding: 14px; border-radius: 12px;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+    color: var(--muted); font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-save {
+    flex: 2; padding: 14px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--midgreen), var(--green));
+    border: none; color: #fff; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 16px rgba(46,125,50,0.4);
+  }
+
+  /* ── Investments tab ── */
+  .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .inv-card {
+    background: rgba(13,31,16,0.9);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 12px;
+    position: relative; overflow: hidden;
+  }
+  .inv-card::after {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--accent); opacity: 0.12;
+  }
+  .inv-name { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+  .inv-value { font-size: 22px; font-weight: 900; letter-spacing: -0.8px; margin-bottom: 2px; }
+  .inv-sub { font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+
+  /* ── Month slider ── */
+  .slider-wrap { margin: 8px 0 12px; }
+  .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+  input[type=range]::-webkit-slider-runnable-track { background: #1a3320; height: 6px; border-radius: 99px; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); margin-top: -8px; cursor: pointer; box-shadow: 0 0 8px #F9A82560; border: 2px solid #fff2; }
+  .month-ticks { display: flex; justify-content: space-between; }
+  .month-tick { font-size: 11px; color: var(--muted); cursor: pointer; padding: 2px 0; }
+  .month-tick.active { color: var(--gold); font-weight: 700; }
+
+  /* ── Monthly Plan Tab ── */
+  .plan-selector-btn {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(13,31,16,0.9); border: 2px solid var(--border);
+    border-radius: 14px; padding: 14px 16px; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 12px; font-family: inherit;
+  }
+  .plan-selector-btn.open { border-color: #F9A82570; box-shadow: 0 0 20px #F9A82518; background: rgba(249,168,37,0.08); }
+  .plan-sel-left { display: flex; align-items: center; gap: 10px; }
+  .plan-cal-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #F9A82540, #2E7D3240); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .plan-month-name { font-size: 18px; font-weight: 800; color: var(--gold); letter-spacing: -0.3px; }
+  .plan-month-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .chevron { font-size: 16px; color: var(--gold); font-weight: 900; transition: transform 0.3s; }
+  .chevron.open { transform: rotate(180deg); }
+
+  /* Dropdown */
+  .plan-dropdown {
+    background: #0d1f10; border: 2px solid #F9A82550;
+    border-radius: 16px; overflow: hidden; margin-bottom: 12px;
+    animation: dropIn 0.2s ease;
+  }
+  .year-tabs { display: flex; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.3); }
+  .year-tab {
+    flex: 1; padding: 10px 4px; border: none; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    background: transparent; color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .year-tab.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(249,168,37,0.1); }
+  .month-list { max-height: 240px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .month-option {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border: none; cursor: pointer;
+    background: transparent; font-family: inherit;
+    border-left: 3px solid transparent; transition: all 0.15s;
+  }
+  .month-option.selected { background: rgba(249,168,37,0.08); border-left-color: var(--gold); }
+  .month-option-left { display: flex; align-items: center; gap: 10px; }
+  .month-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .month-option-name { font-size: 14px; color: var(--text); font-weight: 500; }
+  .month-option.selected .month-option-name { color: var(--gold); font-weight: 700; }
+  .month-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 5px; }
+  .badge-switch { background: rgba(239,83,80,0.2); color: var(--red); }
+  .badge-accel { background: rgba(249,168,37,0.15); color: var(--gold); }
+  .dropdown-legend { display: flex; gap: 14px; padding: 8px 16px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.2); }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--muted); }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* Phase badge */
+  .phase-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    border-radius: 99px; padding: 6px 14px; margin-bottom: 14px;
+    font-size: 12px; font-weight: 700;
+  }
+  .phase-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* Plan quick stats */
+  .plan-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+  .plan-stat { background: rgba(13,31,16,0.9); border: 1px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
+  .plan-stat-icon { font-size: 18px; margin-bottom: 4px; }
+  .plan-stat-val { font-size: 16px; font-weight: 800; }
+  .plan-stat-label { font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+
+  /* Collapsible */
+  .collapsible { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 10px; }
+  .collapsible.open { border-color: rgba(249,168,37,0.35); }
+  .coll-header {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border: none; cursor: pointer; font-family: inherit;
+    background: rgba(13,31,16,0.9); transition: background 0.2s;
+  }
+  .collapsible.open .coll-header { background: rgba(249,168,37,0.07); border-bottom: 1px solid rgba(249,168,37,0.2); }
+  .coll-left { display: flex; align-items: center; gap: 10px; }
+  .coll-icon-wrap { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .coll-title { font-size: 14px; font-weight: 700; color: #fff; text-align: left; }
+  .coll-sub { font-size: 11px; color: var(--muted); text-align: left; margin-top: 1px; }
+  .coll-chevron { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; flex-shrink: 0; transition: transform 0.3s; }
+  .collapsible.open .coll-chevron { transform: rotate(180deg); }
+  .coll-body { background: rgba(13,31,16,0.9); padding: 0 16px; max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s; }
+  .collapsible.open .coll-body { max-height: 2000px; padding: 16px; }
+
+  /* Plan breakdown table */
+  .plan-table-header { display: grid; grid-template-columns: 1fr 70px 70px 60px; font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .plan-table-header span:not(:first-child) { text-align: right; }
+  .plan-row { display: grid; grid-template-columns: 1fr 70px 70px 60px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(26,51,32,0.3); }
+  .plan-row:last-child { border-bottom: none; }
+  .plan-row-left { display: flex; align-items: center; gap: 6px; }
+  .plan-row-name { font-size: 12px; font-weight: 600; color: var(--text); }
+  .plan-row-sub { font-size: 10px; font-weight: 700; margin-top: 1px; }
+  .plan-row span { font-size: 12px; font-weight: 600; text-align: right; }
+  .plan-total-row { display: grid; grid-template-columns: 1fr 70px 70px 60px; align-items: center; padding: 12px 0 4px; border-top: 2px solid var(--border); margin-top: 4px; }
+  .plan-total-row span { font-size: 13px; font-weight: 800; text-align: right; }
+  .plan-total-row span:first-child { text-align: left; color: #fff; }
+  .plan-balance-row { background: rgba(249,168,37,0.1); border: 1px solid rgba(249,168,37,0.25); border-radius: 10px; padding: 12px 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+  /* Redirect cards */
+  .redir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .redir-card { background: rgba(249,168,37,0.06); border: 1px solid rgba(249,168,37,0.2); border-radius: 12px; padding: 12px; text-align: center; }
+  .redir-icon { font-size: 20px; margin-bottom: 6px; }
+  .redir-amount { font-size: 18px; font-weight: 800; color: var(--gold); }
+  .redir-pct { font-size: 10px; color: var(--gold); font-weight: 600; margin-bottom: 3px; }
+  .redir-label { font-size: 11px; color: var(--muted); line-height: 1.3; }
+
+  /* Inv progress section */
+  .inv-prog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .inv-prog-card { background: rgba(13,31,16,0.6); border: 1px solid var(--border); border-radius: 10px; padding: 10px; text-align: center; }
+  .ipc-name { font-size: 10px; color: var(--muted); margin-bottom: 4px; line-height: 1.3; }
+  .ipc-val { font-size: 16px; font-weight: 800; color: var(--gold); }
+  .ipc-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+  /* Grand total bar */
+  .grand-total-bar {
+    background: linear-gradient(135deg, rgba(27,94,32,0.6), rgba(27,94,32,0.3));
+    border: 2px solid rgba(249,168,37,0.5);
+    border-radius: 14px; padding: 16px;
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: 4px; box-shadow: 0 0 20px rgba(249,168,37,0.1);
+  }
+  .gt-row { display: flex; justify-content: space-between; align-items: center; }
+  .gt-label { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+  .gt-value { font-size: 18px; font-weight: 800; }
+
+  /* Animations */
+  @keyframes dropIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes countUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--midgreen); border-radius: 99px; }
+
+
+  /* ── PIN Screen ── */
+  #pin-screen {
+    position: fixed; inset: 0; z-index: 500;
+    background: #070f09;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 32px calc(40px + var(--safe-bottom));
+    padding-top: calc(40px + var(--safe-top));
+  }
+  #pin-screen.hidden { display: none; }
+
+  .pin-logo {
+    width: 72px; height: 72px; border-radius: 20px;
+    background: linear-gradient(135deg, #F9A825, #2E7D32);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px; margin-bottom: 20px;
+    box-shadow: 0 0 40px #F9A82540;
+    animation: logoPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes logoPulse {
+    0%, 100% { box-shadow: 0 0 30px #F9A82530; }
+    50% { box-shadow: 0 0 55px #F9A82560; }
+  }
+  .pin-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; text-align: center; }
+  .pin-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 36px; text-align: center; line-height: 1.5; }
+  .pin-setup-step { font-size: 13px; color: var(--gold); font-weight: 600; margin-bottom: 12px; text-align: center; letter-spacing: 0.3px; }
+  .pin-dots { display: flex; gap: 16px; margin-bottom: 10px; }
+  .pin-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid #F9A82560; background: transparent;
+    transition: all 0.15s cubic-bezier(0.4,0,0.2,1);
+  }
+  .pin-dot.filled { background: #F9A825; border-color: #F9A825; box-shadow: 0 0 12px #F9A82580; transform: scale(1.15); }
+  .pin-dot.error { background: var(--red); border-color: var(--red); box-shadow: 0 0 12px #EF535080; }
+  .pin-dot.success { background: var(--lightgreen); border-color: var(--lightgreen); box-shadow: 0 0 12px #4CAF5080; }
+  .pin-error-msg { font-size: 13px; color: var(--red); font-weight: 600; margin-bottom: 20px; min-height: 18px; text-align: center; opacity: 0; transition: opacity 0.2s; }
+  .pin-error-msg.visible { opacity: 1; }
+  .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 280px; margin-top: 8px; }
+  .pin-key {
+    aspect-ratio: 1; border-radius: 50%; border: 1px solid #1a3320;
+    background: rgba(13,31,16,0.8); color: #fff; font-size: 22px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1px; transition: all 0.12s;
+    -webkit-tap-highlight-color: transparent; font-family: inherit; user-select: none;
+  }
+  .pin-key:active { background: rgba(249,168,37,0.2); border-color: #F9A82580; transform: scale(0.93); }
+  .pin-key .key-letters { font-size: 9px; color: var(--muted); font-weight: 500; letter-spacing: 1px; }
+  .pin-key.empty { border: none; background: transparent; cursor: default; }
+  .pin-key.empty:active { background: transparent; transform: none; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-10px)} 30%{transform:translateX(10px)} 45%{transform:translateX(-8px)} 60%{transform:translateX(8px)} 75%{transform:translateX(-5px)} 90%{transform:translateX(5px)} }
+  .pin-dots.shake { animation: shake 0.5s ease; }
+  @keyframes pinSlideUp { from{transform:translateY(0);opacity:1} to{transform:translateY(-40px);opacity:0} }
+  #pin-screen.unlocking { animation: pinSlideUp 0.35s ease forwards; pointer-events:none; }
+  .pin-forgot { margin-top: 28px; font-size: 12px; color: var(--muted); text-align: center; line-height: 1.8; }
+  .pin-forgot span { color: var(--gold); font-weight: 600; cursor: pointer; text-decoration: underline; }
+
+  /* Install prompt */
+  #install-banner {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(135deg, #0d1f10, #1B5E20);
+    border-top: 2px solid var(--gold);
+    padding: 14px 16px calc(14px + var(--safe-bottom));
+    z-index: 200; display: flex; align-items: center; gap: 12px;
+    animation: slideUp 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  #install-banner.hidden { display: none; }
+  .install-text { flex: 1; font-size: 13px; color: var(--text); line-height: 1.4; }
+  .install-text strong { color: var(--gold); }
+  .install-later { background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 12px; padding: 8px 12px; cursor: pointer; font-family: inherit; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+
+<!-- ── PIN SCREEN ── -->
+<div id="pin-screen">
+  <div class="pin-logo">🏦</div>
+  <div class="pin-title">Sam's Financial Dashboard</div>
+  <div class="pin-subtitle" id="pin-subtitle">Enter your PIN to unlock</div>
+  <div class="pin-setup-step" id="pin-setup-step" style="display:none"></div>
+  <div class="pin-dots" id="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+  </div>
+  <div class="pin-error-msg" id="pin-error"></div>
+  <div class="pin-keypad">
+    <button class="pin-key" onclick="pinKey('1')">1</button>
+    <button class="pin-key" onclick="pinKey('2')">2<div class="key-letters">ABC</div></button>
+    <button class="pin-key" onclick="pinKey('3')">3<div class="key-letters">DEF</div></button>
+    <button class="pin-key" onclick="pinKey('4')">4<div class="key-letters">GHI</div></button>
+    <button class="pin-key" onclick="pinKey('5')">5<div class="key-letters">JKL</div></button>
+    <button class="pin-key" onclick="pinKey('6')">6<div class="key-letters">MNO</div></button>
+    <button class="pin-key" onclick="pinKey('7')">7<div class="key-letters">PQRS</div></button>
+    <button class="pin-key" onclick="pinKey('8')">8<div class="key-letters">TUV</div></button>
+    <button class="pin-key" onclick="pinKey('9')">9<div class="key-letters">WXYZ</div></button>
+    <button class="pin-key empty"></button>
+    <button class="pin-key" onclick="pinKey('0')">0</button>
+    <button class="pin-key" onclick="pinDel()">⌫</button>
+  </div>
+  <div class="pin-forgot" id="pin-forgot">
+    Forgot PIN? <span onclick="resetPin()">Reset dashboard PIN</span>
+  </div>
+</div>
+
+<div id="app">
+  <div id="header">
+    <div class="header-left">
+      <div class="logo">🏦</div>
+      <div class="header-title">Sam's Financial Dashboard</div>
+    </div>
+    <div class="balance-chip">
+      <div class="balance-label">Balance</div>
+      <div class="balance-value" id="header-balance" style="color:#F9A825">₵10,000</div>
+    </div>
+  </div>
+
+  <div id="content"></div>
+
+  <nav id="nav">
+    <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview')">
+      <span class="nav-icon">◈</span>
+      <span class="nav-label">Overview</span>
+    </button>
+    <button class="nav-btn" data-tab="budget" onclick="switchTab('budget')">
+      <span class="nav-icon">◉</span>
+      <span class="nav-label">Budget</span>
+    </button>
+    <button class="nav-btn" data-tab="investments" onclick="switchTab('investments')">
+      <span class="nav-icon">◆</span>
+      <span class="nav-label">Invest</span>
+    </button>
+    <button class="nav-btn" data-tab="plan" onclick="switchTab('plan')">
+      <span class="nav-icon">◇</span>
+      <span class="nav-label">Monthly</span>
+    </button>
+  </nav>
+</div>
+
+<!-- Input overlay -->
+<div id="input-overlay" onclick="closeInput(event)">
+  <div id="input-sheet" onclick="event.stopPropagation()">
+    <div class="input-sheet-title" id="input-cat-label">Category</div>
+    <div class="input-sheet-label" id="input-item-label">Item name</div>
+    <input type="number" id="amount-input" inputmode="decimal" placeholder="0" min="0">
+    <div class="input-actions">
+      <button class="btn-cancel" onclick="closeInput()">Cancel</button>
+      <button class="btn-save" onclick="saveInput()">Save ₵</button>
+    </div>
+  </div>
+</div>
+
+<!-- Install banner -->
+<div id="install-banner" class="hidden">
+  <div class="install-text">
+    <strong>📲 Add to Home Screen</strong><br>
+    Tap <strong>Share → Add to Home Screen</strong> in Safari to install Sam's Dashboard as an app — works offline!
+  </div>
+  <button class="install-later" onclick="dismissInstall()">Got it</button>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA & STATE
+// ══════════════════════════════════════════════
+const INCOME = 10000;
+const C = {
+  green:'#1B5E20', mid:'#2E7D32', light:'#4CAF50',
+  gold:'#F9A825', goldl:'#FFD54F', muted:'#7a9e7a',
+  red:'#EF5350', blue:'#42A5F5', orange:'#FFA726', purple:'#CE93D8', text:'#E8F5E9'
+};
+
+const SECTIONS = [
+  { id:'housing', label:'Housing & Fixed', icon:'🏠', color:C.light,
+    items:[{n:'Rent / Accommodation',b:5000},{n:'Electricity & Water',b:400},{n:'Internet & WiFi',b:200},{n:'Other Housing',b:100}] },
+  { id:'church', label:'Church & Community', icon:'⛪', color:C.orange,
+    items:[{n:'Tithe / Church Offerings',b:700},{n:'Church Events & Programs',b:100}] },
+  { id:'data', label:'Data & Subscriptions', icon:'📱', color:C.blue,
+    items:[{n:'Mobile Data Bundles',b:200},{n:'Streaming Services',b:150},{n:'Other Subscriptions',b:50}] },
+  { id:'family', label:'Family Support', icon:'👨‍👩‍👧', color:C.purple,
+    items:[{n:'Monthly Family Upkeep',b:400},{n:'Special Family Needs',b:200}] },
+  { id:'personal_payments', label:'Personal Payments', icon:'💳', color:C.red, endsJune:true,
+    items:[{n:'Loan Repayment #1',b:1000},{n:'Loan Repayment #2',b:700},{n:'Other Commitments',b:300}] },
+  { id:'investments', label:'Investments', icon:'📈', color:C.goldl,
+    items:[{n:'Stocks & ETFs',b:1000},{n:'Treasury Bills (T-Bills)',b:500},{n:'Money Market Fund',b:300},{n:'Mutual Fund',b:200}] },
+  { id:'savings', label:'Savings', icon:'🏦', color:C.gold,
+    items:[{n:'Emergency Fund',b:500},{n:'Short-Term Goals',b:200},{n:'Sinking Funds',b:150}] },
+  { id:'personal', label:'Personal & Lifestyle', icon:'🎉', color:C.muted,
+    items:[{n:'Groceries & Food',b:400},{n:'Transport / Fuel',b:300},{n:'Eating Out / Social',b:150},{n:'Personal Care',b:100},{n:'Miscellaneous',b:50}] },
+];
+
+const INVESTMENTS = [
+  {name:'Stocks & ETFs', monthly:1000, color:C.gold},
+  {name:'Treasury Bills', monthly:500, color:C.light},
+  {name:'Money Market Fund', monthly:300, color:C.blue},
+  {name:'Mutual Fund', monthly:200, color:C.purple},
+];
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function genMonthOptions() {
+  const opts = [];
+  for (let y = 2026; y <= 2030; y++) {
+    const ms = y === 2026 ? 1 : 0;
+    for (let m = ms; m < 12; m++) opts.push({month:m, year:y, label:`${MONTHS[m]} ${y}`});
+  }
+  return opts;
+}
+const MONTH_OPTIONS = genMonthOptions();
+
+// Load state from localStorage
+let STATE = {
+  actuals: {},
+  invMonth: 1,
+  planIdx: 0,
+  planDropOpen: false,
+  planYearFilter: null,
+  openCollapsibles: {breakdown:true, redirect:true, preview:false, invprog:false},
+  currentTab: 'overview',
+};
+
+try { const s = localStorage.getItem('sams_dash'); if (s) { const p = JSON.parse(s); STATE = {...STATE, ...p}; } } catch(e) {}
+
+function save() {
+  try { localStorage.setItem('sams_dash', JSON.stringify({actuals:STATE.actuals, invMonth:STATE.invMonth, planIdx:STATE.planIdx})); } catch(e) {}
+}
+
+// ── Derived values ──
+function totalBudget() { return SECTIONS.reduce((a,s) => a + s.items.reduce((b,i) => b+i.b, 0), 0); }
+function totalActual() { return Object.values(STATE.actuals).reduce((a,v) => a+v, 0); }
+function balance() { return INCOME - totalActual(); }
+function secBudget(sid) { return SECTIONS.find(s=>s.id===sid)?.items.reduce((a,i)=>a+i.b,0)||0; }
+function secActual(sid) { const sec=SECTIONS.find(s=>s.id===sid); return sec ? sec.items.reduce((a,i)=>a+(STATE.actuals[sid+'_'+i.n]||0),0) : 0; }
+function isAfterJune(m, y) { return y > 2026 || (y === 2026 && m > 5); }
+function monthNum(m, y) { return (y - 2026) * 12 + (m - 1); }
+
+function getPlan(m, y) {
+  const after = isAfterJune(m, y);
+  const mnum = monthNum(m, y);
+  const base = [
+    {label:'Housing & Fixed', icon:'🏠', color:C.light, before:5700, after:5700},
+    {label:'Church & Community', icon:'⛪', color:C.orange, before:800, after:800},
+    {label:'Data & Subscriptions', icon:'📱', color:C.blue, before:400, after:400},
+    {label:'Family Support', icon:'👨‍👩‍👧', color:C.purple, before:600, after:600},
+    {label:'Personal Payments', icon:'💳', color:C.red, before:2000, after:0, ended:true},
+    {label:'Investments', icon:'📈', color:C.gold, before:2000, after:2600, change:'+₵600'},
+    {label:'Savings', icon:'🏦', color:C.goldl, before:850, after:1350, change:'+₵500'},
+    {label:'Personal & Lifestyle', icon:'🎉', color:C.muted, before:1000, after:1000},
+  ];
+  const rows = base.map(r => ({...r, current: after ? r.after : r.before}));
+  const totalOut = rows.reduce((a,r) => a+r.current, 0);
+  return {rows, totalOut, after, mnum};
+}
+
+const REDIRECTIONS = [
+  {label:'Extra Investments', amount:600, pct:'30%', icon:'📈'},
+  {label:'Emergency Fund Top-Up', amount:500, pct:'25%', icon:'🛡️'},
+  {label:'Long-term Savings', amount:300, pct:'15%', icon:'🏦'},
+  {label:'Sinking Fund / Buffer', amount:200, pct:'10%', icon:'🔒'},
+  {label:'Debt Final Sweep', amount:200, pct:'10%', icon:'💳'},
+  {label:'Lifestyle Reward', amount:200, pct:'10%', icon:'🎉'},
+];
+
+// ══════════════════════════════════════════════
+// RENDER HELPERS
+// ══════════════════════════════════════════════
+function fmt(n) { return Math.round(n).toLocaleString(); }
+function progBar(val, max, color, height=6) {
+  const pct = max > 0 ? Math.min(val/max*100, 100) : 0;
+  const over = max > 0 && val > max;
+  return `<div class="prog-track" style="height:${height}px">
+    <div class="prog-fill" style="width:${pct}%;background:${over?C.red:color};height:${height}px"></div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// TAB: OVERVIEW
+// ══════════════════════════════════════════════
+function renderOverview() {
+  const tb = totalBudget(), ta = totalActual(), bal = balance();
+  const inv = INVESTMENTS.reduce((a,i) => a+i.monthly*STATE.invMonth, 0);
+  const goalPct = Math.min(inv/10000*100, 100);
+
+  return `
+  <div class="kpi-grid">
+    ${[
+      {label:'Monthly Income', val:INCOME, color:C.light, icon:'💰'},
+      {label:'Total Budgeted', val:tb, color:C.blue, icon:'📋'},
+      {label:'Total Spent', val:ta, color:ta>tb?C.red:C.gold, icon:'💸'},
+      {label:'Live Balance', val:bal, color:bal>=0?C.gold:C.red, icon:'💵', glow:true},
+    ].map(k => `
+      <div class="kpi-card${k.glow?' glow':''}">
+        <div class="kpi-icon">${k.icon}</div>
+        <div class="kpi-value" style="color:${k.color}">₵${fmt(k.val)}</div>
+        <div class="kpi-label">${k.label}</div>
+      </div>`).join('')}
+  </div>
+
+  <div class="card">
+    <div class="card-title">Budget by Category</div>
+    ${SECTIONS.map(s => {
+      const sb = secBudget(s.id), sa = secActual(s.id);
+      const pct = Math.round(sb/INCOME*100);
+      const diff = sb - sa;
+      const status = sa === 0 ? '' : sa <= sb
+        ? `<span style="color:${C.light};font-size:10px;font-weight:700">✅</span>`
+        : `<span style="color:${C.red};font-size:10px;font-weight:700">❌</span>`;
+      return `
+      <div class="section-row">
+        <div class="section-left">
+          <div class="section-icon-wrap" style="background:${s.color}22;border:1px solid ${s.color}40">${s.icon}</div>
+          <div>
+            <div class="section-name">${s.label}</div>
+            <div class="section-sub">${pct}% of income</div>
+          </div>
+        </div>
+        <div class="section-right">
+          <div class="section-amount" style="color:${s.color}">₵${fmt(sb)} ${status}</div>
+          ${sa > 0 ? `<div style="font-size:10px;color:${diff>=0?C.light:C.red}">${diff>=0?'₵'+fmt(diff)+' under':'₵'+fmt(Math.abs(diff))+' over'}</div>` : ''}
+        </div>
+      </div>
+      <div style="margin:4px 0 6px">${progBar(sa||sb, sb, s.color, 4)}</div>`;
+    }).join('')}
+  </div>
+
+  <div class="card glow">
+    <div class="card-title">Investment Goal Progress</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px">
+      <div>
+        <div style="font-size:28px;font-weight:900;color:${C.gold};letter-spacing:-1px">₵${fmt(inv)}</div>
+        <div style="font-size:11px;color:${C.muted}">invested by month ${STATE.invMonth}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:22px;font-weight:800;color:${goalPct>=100?C.light:C.gold}">${Math.round(goalPct)}%</div>
+        <div style="font-size:11px;color:${C.muted}">of ₵10,000 target</div>
+      </div>
+    </div>
+    ${progBar(inv, 10000, C.gold, 12)}
+    ${goalPct >= 100 ? `<div style="text-align:center;color:${C.gold};font-weight:800;margin-top:8px">🎉 Goal Achieved at Month ${STATE.invMonth}!</div>` : ''}
+    <div class="slider-wrap" style="margin-top:14px">
+      <div class="slider-row">
+        <span style="font-size:12px;color:${C.muted}">Simulate: Month <strong style="color:${C.gold}">${STATE.invMonth}</strong></span>
+        <span style="font-size:11px;color:${C.gold}">₵${fmt(inv)} / ₵10,000</span>
+      </div>
+      <input type="range" min="1" max="6" value="${STATE.invMonth}" oninput="setInvMonth(this.value)">
+      <div class="month-ticks">
+        ${[1,2,3,4,5,6].map(m=>`<span class="month-tick${m==STATE.invMonth?' active':''}" onclick="setInvMonth(${m})">M${m}</span>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="card-title" style="margin:0">Spending Overview</div>
+      <div style="font-size:11px;color:${C.muted}">₵${fmt(ta)} of ₵${fmt(INCOME)}</div>
+    </div>
+    <div style="display:flex;height:14px;border-radius:99px;overflow:hidden;gap:1px">
+      ${SECTIONS.map(s => `<div style="width:${secBudget(s.id)/INCOME*100}%;background:${s.color};opacity:0.8;cursor:pointer" title="${s.label}: ₵${secBudget(s.id)}"></div>`).join('')}
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px">
+      ${SECTIONS.map(s=>`<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:${C.muted}"><div style="width:7px;height:7px;border-radius:2px;background:${s.color}"></div>${s.icon} ${s.label}</div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// TAB: BUDGET
+// ══════════════════════════════════════════════
+function renderBudget() {
+  const tb = totalBudget(), ta = totalActual(), bal = balance();
+  let html = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="font-size:12px;color:${C.muted}">Tap yellow fields to enter spending</div>
+    <div style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3);border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;color:${C.gold}">₵${fmt(bal)}</div>
+  </div>`;
+
+  SECTIONS.forEach(s => {
+    const sb = secBudget(s.id), sa = secActual(s.id), diff = sb - sa;
+    html += `
+    <div class="card">
+      <div class="budget-sec-header">
+        <div class="bsh-left">
+          <div style="font-size:18px">${s.icon}</div>
+          <div>
+            <div class="bsh-title" style="color:${s.color}">${s.label}</div>
+            ${s.endsJune ? '<div style="font-size:10px;color:#EF5350;font-weight:600">⚡ Ends after June</div>' : ''}
+          </div>
+        </div>
+        <div>
+          <div class="bsh-total" style="color:${s.color}">₵${fmt(sb)}</div>
+          ${sa > 0 ? `<div style="font-size:11px;color:${diff>=0?C.light:C.red};text-align:right">${diff>=0?'₵'+fmt(diff)+' under':'₵'+fmt(Math.abs(diff))+' over'}</div>` : ''}
+        </div>
+      </div>
+      <div style="margin-bottom:10px">${progBar(sa, sb, s.color, 5)}</div>
+      <div style="display:grid;grid-template-columns:1fr 72px 80px 60px;font-size:10px;color:${C.muted};font-weight:600;text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid #1a332040">
+        <span>Item</span><span style="text-align:right">Budget</span><span style="text-align:center">Actual</span><span style="text-align:right">Diff</span>
+      </div>
+      ${s.items.map(item => {
+        const key = s.id + '_' + item.n;
+        const actual = STATE.actuals[key] || 0;
+        const d = item.b - actual;
+        return `
+        <div class="budget-item">
+          <div class="item-name">${item.n}</div>
+          <div class="item-budget">₵${fmt(item.b)}</div>
+          <div>
+            <button class="item-actual-btn${actual>0?' has-value':''}" onclick="openInput('${s.id}','${item.n.replace(/'/g,"\\'")}',${item.b})">
+              ${actual > 0 ? '₵'+fmt(actual) : '₵0'}
+            </button>
+          </div>
+          <div class="item-diff ${actual===0?'diff-none':d>=0?'diff-pos':'diff-neg'}">
+            ${actual===0 ? '—' : d>=0 ? '+₵'+fmt(d) : '-₵'+fmt(Math.abs(d))}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+
+  html += `
+  <div class="grand-total-bar">
+    <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:4px">📊 TOTAL EXPENSES</div>
+    <div class="gt-row"><span class="gt-label">Budgeted</span><span class="gt-value" style="color:${C.gold}">₵${fmt(tb)}</span></div>
+    <div class="gt-row"><span class="gt-label">Actual Spent</span><span class="gt-value" style="color:${C.text}">₵${fmt(ta)}</span></div>
+    <div style="height:1px;background:#1a3320;margin:4px 0"></div>
+    <div class="gt-row"><span class="gt-label" style="font-size:12px;color:#fff;font-weight:700">Remaining Balance</span>
+      <span style="font-size:22px;font-weight:900;color:${bal>=0?C.gold:C.red}">₵${fmt(bal)}</span>
+    </div>
+  </div>`;
+
+  return html;
+}
+
+// ══════════════════════════════════════════════
+// TAB: INVESTMENTS
+// ══════════════════════════════════════════════
+function renderInvestments() {
+  const inv = INVESTMENTS.reduce((a,i) => a+i.monthly*STATE.invMonth, 0);
+  const goalPct = Math.min(inv/10000*100, 100);
+
+  let html = `<div class="inv-grid">
+    ${INVESTMENTS.map(i => `
+    <div class="inv-card" style="--accent:${i.color}">
+      <div class="inv-name">${i.name}</div>
+      <div class="inv-value" style="color:${i.color}">₵${fmt(i.monthly*STATE.invMonth)}</div>
+      <div class="inv-sub">₵${fmt(i.monthly)}/mo × M${STATE.invMonth}</div>
+      ${progBar(i.monthly*STATE.invMonth, i.monthly*6, i.color, 5)}
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:${C.muted};margin-top:3px">
+        <span>M${STATE.invMonth}</span><span>6-Mo: ₵${fmt(i.monthly*6)}</span>
+      </div>
+    </div>`).join('')}
+  </div>
+
+  <div class="card glow">
+    <div class="card-title">Growth Simulator</div>
+    <div class="slider-row" style="margin-bottom:6px">
+      <span style="font-size:12px;color:${C.muted}">Month: <strong style="color:${C.gold}">${STATE.invMonth}</strong></span>
+      <span style="font-size:12px;color:${C.gold};font-weight:700">₵${fmt(inv)} total</span>
+    </div>
+    <input type="range" min="1" max="6" value="${STATE.invMonth}" oninput="setInvMonth(this.value)">
+    <div class="month-ticks">
+      ${[1,2,3,4,5,6].map(m=>`<span class="month-tick${m==STATE.invMonth?' active':''}" onclick="setInvMonth(${m})">M${m}</span>`).join('')}
+    </div>
+    <div style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:12px;color:${C.muted}">Progress to ₵10,000 Goal</span>
+        <span style="font-size:12px;color:${C.gold};font-weight:700">${Math.round(goalPct)}%</span>
+      </div>
+      ${progBar(inv, 10000, C.gold, 14)}
+      ${goalPct>=100 ? `<div style="text-align:center;color:${C.gold};font-weight:800;margin-top:8px">🎉 Goal Achieved at Month ${STATE.invMonth}!</div>`
+        : `<div style="text-align:center;font-size:11px;color:${C.muted};margin-top:6px">₵${fmt(10000-inv)} remaining to ₵10,000</div>`}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Month-by-Month Breakdown</div>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead>
+          <tr style="border-bottom:1px solid #1a3320">
+            <th style="text-align:left;padding:6px 6px;color:${C.muted};font-size:10px">Vehicle</th>
+            ${[1,2,3,4,5,6].map(m=>`<th style="text-align:right;padding:6px 4px;color:${m==STATE.invMonth?C.gold:C.muted};font-size:10px;${m==STATE.invMonth?'font-weight:700':''}">M${m}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${INVESTMENTS.map((inv,idx) => `
+          <tr style="border-bottom:1px solid #1a332030;background:${idx%2===0?'rgba(255,255,255,0.01)':'transparent'}">
+            <td style="padding:8px 6px;color:${inv.color};font-weight:600">${inv.name}</td>
+            ${[1,2,3,4,5,6].map(m=>`<td style="text-align:right;padding:8px 4px;color:${m==STATE.invMonth?C.gold:C.text};${m==STATE.invMonth?'font-weight:700;background:rgba(249,168,37,0.08)':''}">₵${fmt(inv.monthly*m)}</td>`).join('')}
+          </tr>`).join('')}
+          <tr style="border-top:2px solid #1a3320;font-weight:800">
+            <td style="padding:8px 6px;color:${C.gold}">TOTAL</td>
+            ${[1,2,3,4,5,6].map(m=>{
+              const t=INVESTMENTS.reduce((a,i)=>a+i.monthly*m,0);
+              return `<td style="text-align:right;padding:8px 4px;color:${m==STATE.invMonth?C.gold:C.light};${m==STATE.invMonth?'font-weight:800;background:rgba(249,168,37,0.1)':''}">₵${fmt(t)}</td>`;
+            }).join('')}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+
+  return html;
+}
+
+// ══════════════════════════════════════════════
+// TAB: MONTHLY PLAN
+// ══════════════════════════════════════════════
+function renderPlan() {
+  const opt = MONTH_OPTIONS[STATE.planIdx];
+  const {rows, totalOut, after, mnum} = getPlan(opt.month, opt.year);
+  const bal = INCOME - totalOut;
+  const years = [...new Set(MONTH_OPTIONS.map(o => o.year))];
+  const filtered = STATE.planYearFilter ? MONTH_OPTIONS.filter(o=>o.year===STATE.planYearFilter) : MONTH_OPTIONS;
+  const phaseColor = after ? C.gold : C.light;
+  const phaseBg = after ? 'rgba(249,168,37,0.15)' : 'rgba(76,175,80,0.15)';
+  const phaseText = after ? '⚡ Wealth Acceleration Phase' : '🌱 Foundation Building Phase';
+
+  const monthlyInv = after ? 2600 : 2000;
+  const cumInv = monthlyInv * (mnum + 1);
+  const invGoalPct = Math.min(cumInv/10000*100, 100);
+
+  let html = `
+  <!-- Selector button -->
+  <button class="plan-selector-btn${STATE.planDropOpen?' open':''}" onclick="togglePlanDrop()">
+    <div class="plan-sel-left">
+      <div class="plan-cal-icon">📅</div>
+      <div>
+        <div class="plan-month-name">${opt.label}</div>
+        <div class="plan-month-sub">Month ${mnum+1} · ${after?'July+ plan active':'Jan–June plan active'}</div>
+      </div>
+    </div>
+    <span class="chevron${STATE.planDropOpen?' open':''}">▾</span>
+  </button>
+
+  <!-- Dropdown -->
+  ${STATE.planDropOpen ? `
+  <div class="plan-dropdown">
+    <div class="year-tabs">
+      <button class="year-tab${!STATE.planYearFilter?' active':''}" onclick="setPlanYear(null)">All</button>
+      ${years.map(y=>`<button class="year-tab${STATE.planYearFilter===y?' active':''}" onclick="setPlanYear(${y})">${y}</button>`).join('')}
+    </div>
+    <div class="month-list">
+      ${filtered.map(o => {
+        const realIdx = MONTH_OPTIONS.indexOf(o);
+        const isSel = realIdx === STATE.planIdx;
+        const isSwitch = o.month === 6 && o.year === 2026;
+        const isPost = isAfterJune(o.month, o.year);
+        return `<button class="month-option${isSel?' selected':''}" onclick="selectPlanMonth(${realIdx})">
+          <div class="month-option-left">
+            <div class="month-dot" style="background:${isSel?C.gold:isPost?C.light:C.muted}"></div>
+            <span class="month-option-name">${o.label}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            ${isSwitch ? '<span class="month-badge badge-switch">SWITCH</span>' : ''}
+            ${isPost && !isSwitch ? '<span class="month-badge badge-accel">ACCEL</span>' : ''}
+            ${isSel ? '<span style="color:var(--gold);font-size:13px">✓</span>' : ''}
+          </div>
+        </button>`;
+      }).join('')}
+    </div>
+    <div class="dropdown-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:${C.muted}"></div>Jan–June plan</div>
+      <div class="legend-item"><div class="legend-dot" style="background:${C.light}"></div>July+ plan</div>
+      <div class="legend-item"><div class="legend-dot" style="background:${C.gold}"></div>Selected</div>
+    </div>
+  </div>` : ''}
+
+  <!-- Phase badge -->
+  <div class="phase-badge" style="background:${phaseBg};border:1px solid ${phaseColor}40">
+    <div class="phase-dot" style="background:${phaseColor};box-shadow:0 0 6px ${phaseColor}"></div>
+    <span style="color:${phaseColor}">${phaseText}</span>
+    <span style="color:${C.muted}">· ${opt.label}</span>
+  </div>
+
+  <!-- Quick stats -->
+  <div class="plan-stats">
+    ${[
+      {icon:'💸', val:`₵${fmt(totalOut)}`, label:'Total Out', color:C.red},
+      {icon:'💵', val:`₵${fmt(bal)}`, label:'Balance', color:bal>=0?C.light:C.red},
+      {icon:'📅', val:`Month ${mnum+1}`, label:'Plan Month', color:C.gold},
+    ].map(s=>`<div class="plan-stat"><div class="plan-stat-icon">${s.icon}</div><div class="plan-stat-val" style="color:${s.color}">${s.val}</div><div class="plan-stat-label">${s.label}</div></div>`).join('')}
+  </div>
+
+  <!-- Collapsible: Budget Breakdown -->
+  <div class="collapsible${STATE.openCollapsibles.breakdown?' open':''}" id="coll-breakdown">
+    <button class="coll-header" onclick="toggleColl('breakdown')">
+      <div class="coll-left">
+        <div class="coll-icon-wrap" style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3)">📋</div>
+        <div>
+          <div class="coll-title">${opt.label} Budget Breakdown</div>
+          <div class="coll-sub">${after?'July+ optimized':'Jan–June foundation'} · ₵${fmt(totalOut)} total</div>
+        </div>
+      </div>
+      <div class="coll-chevron" style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3);color:${C.gold}">▾</div>
+    </button>
+    <div class="coll-body">
+      <div class="plan-table-header"><span>Category</span><span>Jan–Jun</span><span>This Month</span><span>Change</span></div>
+      ${rows.map((row, i) => {
+        const diff = row.current - row.before;
+        return `<div class="plan-row" style="background:${i%2===0?'rgba(255,255,255,0.01)':'transparent'}">
+          <div class="plan-row-left">
+            <span style="font-size:15px">${row.icon}</span>
+            <div>
+              <div class="plan-row-name">${row.label}</div>
+              ${row.ended ? '<div class="plan-row-sub" style="color:'+C.light+'">✅ Payments ended</div>' : ''}
+              ${row.change && !row.ended ? '<div class="plan-row-sub" style="color:'+C.gold+'">' + row.change + '</div>' : ''}
+            </div>
+          </div>
+          <span style="color:${C.muted}">₵${fmt(row.before)}</span>
+          <span style="color:${row.current===0?C.muted:row.color}">${row.current===0?'—':'₵'+fmt(row.current)}</span>
+          <span style="${diff===0?'color:'+C.muted:diff<0?'color:'+C.light:'color:'+C.gold}">${diff===0?'—':diff<0?'-₵'+fmt(Math.abs(diff)):'+₵'+fmt(diff)}</span>
+        </div>`;
+      }).join('')}
+      <div class="plan-total-row">
+        <span>TOTAL EXPENSES</span>
+        <span style="color:${C.muted}">₵${fmt(rows.reduce((a,r)=>a+r.before,0))}</span>
+        <span style="color:${C.gold}">₵${fmt(totalOut)}</span>
+        <span style="color:${bal>=0?C.light:C.red}">${bal>=0?'+₵'+fmt(bal):'-₵'+fmt(Math.abs(bal))}</span>
+      </div>
+      <div class="plan-balance-row">
+        <span style="font-size:13px;font-weight:700;color:${C.text}">💵 Remaining Balance</span>
+        <span style="font-size:18px;font-weight:900;color:${bal>=0?C.gold:C.red}">₵${fmt(bal)}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collapsible: Redirect (only post-June) -->
+  ${after ? `
+  <div class="collapsible${STATE.openCollapsibles.redirect?' open':''}" id="coll-redirect">
+    <button class="coll-header" onclick="toggleColl('redirect')">
+      <div class="coll-left">
+        <div class="coll-icon-wrap" style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3)">🔓</div>
+        <div>
+          <div class="coll-title">₵2,000 Freed — Redirection</div>
+          <div class="coll-sub">Where former personal payments now go</div>
+        </div>
+      </div>
+      <div class="coll-chevron" style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3);color:${C.gold}">▾</div>
+    </button>
+    <div class="coll-body">
+      <div class="redir-grid">
+        ${REDIRECTIONS.map(r=>`<div class="redir-card"><div class="redir-icon">${r.icon}</div><div class="redir-amount">₵${r.amount}</div><div class="redir-pct">${r.pct}</div><div class="redir-label">${r.label}</div></div>`).join('')}
+      </div>
+      <div class="plan-balance-row">
+        <span style="font-size:13px;font-weight:700;color:${C.text}">Total Redirected</span>
+        <span style="font-size:18px;font-weight:900;color:${C.gold}">₵2,000 / month</span>
+      </div>
+    </div>
+  </div>` : ''}
+
+  <!-- Collapsible: Preview (only pre-July) -->
+  ${!after ? `
+  <div class="collapsible${STATE.openCollapsibles.preview?' open':''}" id="coll-preview">
+    <button class="coll-header" onclick="toggleColl('preview')">
+      <div class="coll-left">
+        <div class="coll-icon-wrap" style="background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.3)">🚀</div>
+        <div>
+          <div class="coll-title">What changes after June 2026?</div>
+          <div class="coll-sub">Preview the July+ acceleration plan</div>
+        </div>
+      </div>
+      <div class="coll-chevron" style="background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.3);color:${C.light}">▾</div>
+    </button>
+    <div class="coll-body">
+      <div style="background:rgba(249,168,37,0.12);border:1px solid rgba(249,168,37,0.3);border-radius:12px;padding:14px;margin-bottom:14px">
+        <div style="font-size:14px;font-weight:800;color:${C.gold};margin-bottom:6px">⚡ July 2026: The Switch</div>
+        <div style="font-size:12px;color:${C.text};line-height:1.6">Your <strong style="color:${C.red}">₵2,000 personal payments end</strong> after June. That money gets fully redirected into your wealth-building engine.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${[
+          {label:'Investments', before:'₵2,000', after:'₵2,600', change:'+30%'},
+          {label:'Savings', before:'₵850', after:'₵1,350', change:'+59%'},
+          {label:'Personal Payments', before:'₵2,000', after:'₵0', change:'ENDED'},
+          {label:'Monthly Balance', before:'₵-350', after:'₵+250', change:'FREED'},
+        ].map(item=>`
+        <div style="background:rgba(13,31,16,0.6);border:1px solid #1a3320;border-radius:10px;padding:12px">
+          <div style="font-size:10px;color:${C.muted};font-weight:600;text-transform:uppercase;margin-bottom:6px">${item.label}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="text-align:center"><div style="font-size:9px;color:${C.muted}">Now</div><div style="font-size:13px;font-weight:700;color:${C.text}">${item.before}</div></div>
+            <span style="color:${C.gold}">→</span>
+            <div style="text-align:center"><div style="font-size:9px;color:${C.muted}">July+</div><div style="font-size:13px;font-weight:700;color:${C.gold}">${item.after}</div></div>
+            <div style="font-size:9px;font-weight:700;padding:3px 6px;border-radius:5px;background:${item.change==='ENDED'?'rgba(76,175,80,0.2)':'rgba(249,168,37,0.2)'};color:${item.change==='ENDED'?C.light:C.gold}">${item.change}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>` : ''}
+
+  <!-- Collapsible: Investment Progress -->
+  <div class="collapsible${STATE.openCollapsibles.invprog?' open':''}" id="coll-invprog">
+    <button class="coll-header" onclick="toggleColl('invprog')">
+      <div class="coll-left">
+        <div class="coll-icon-wrap" style="background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.3)">📈</div>
+        <div>
+          <div class="coll-title">Investment Progress</div>
+          <div class="coll-sub">Cumulative by ${opt.label}</div>
+        </div>
+      </div>
+      <div class="coll-chevron" style="background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.3);color:${C.light}">▾</div>
+    </button>
+    <div class="coll-body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px">
+        <div>
+          <div style="font-size:26px;font-weight:900;color:${C.gold};letter-spacing:-1px">₵${fmt(cumInv)}</div>
+          <div style="font-size:11px;color:${C.muted}">invested by ${opt.label}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:20px;font-weight:800;color:${invGoalPct>=100?C.light:C.gold}">${Math.round(invGoalPct)}%</div>
+          <div style="font-size:11px;color:${C.muted}">of ₵10,000 goal</div>
+        </div>
+      </div>
+      ${progBar(cumInv, 10000, C.gold, 12)}
+      ${invGoalPct >= 100
+        ? `<div style="text-align:center;color:${C.gold};font-weight:800;margin-top:8px">🎉 Goal already achieved by ${opt.label}!</div>`
+        : `<div style="text-align:center;font-size:11px;color:${C.muted};margin-top:6px">₵${fmt(10000-cumInv)} to reach ₵10,000 target</div>`}
+      <div class="inv-prog-grid">
+        ${[
+          {name:'Stocks & ETFs', m:1000},
+          {name:'T-Bills', m:after?650:500},
+          {name:'Money Market', m:after?550:300},
+          {name:'Mutual Fund', m:after?400:200},
+        ].map(v=>`<div class="inv-prog-card"><div class="ipc-name">${v.name}</div><div class="ipc-val">₵${fmt(v.m*(mnum+1))}</div><div class="ipc-sub">₵${v.m}/mo</div></div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  return html;
+}
+
+// ══════════════════════════════════════════════
+// RENDER ENGINE
+// ══════════════════════════════════════════════
+function render() {
+  const content = document.getElementById('content');
+  const tab = STATE.currentTab;
+  let html = '';
+  if (tab === 'overview') html = renderOverview();
+  else if (tab === 'budget') html = renderBudget();
+  else if (tab === 'investments') html = renderInvestments();
+  else if (tab === 'plan') html = renderPlan();
+  content.innerHTML = html;
+
+  // Update header balance
+  const bal = balance();
+  const hb = document.getElementById('header-balance');
+  hb.textContent = '₵' + fmt(bal);
+  hb.style.color = bal >= 0 ? '#F9A825' : '#EF5350';
+
+  // Update nav
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+}
+
+// ══════════════════════════════════════════════
+// INTERACTIONS
+// ══════════════════════════════════════════════
+function switchTab(tab) {
+  STATE.currentTab = tab;
+  STATE.planDropOpen = false;
+  render();
+  document.getElementById('content').scrollTop = 0;
+}
+
+function setInvMonth(v) {
+  STATE.invMonth = parseInt(v);
+  save();
+  render();
+}
+
+// Input overlay
+let _inputKey = null;
+function openInput(secId, itemName, budget) {
+  _inputKey = secId + '_' + itemName;
+  const current = STATE.actuals[_inputKey] || 0;
+  document.getElementById('input-cat-label').textContent = SECTIONS.find(s=>s.id===secId)?.label || secId;
+  document.getElementById('input-item-label').textContent = itemName;
+  const inp = document.getElementById('amount-input');
+  inp.value = current > 0 ? current : '';
+  inp.placeholder = `Budget: ₵${budget}`;
+  const ov = document.getElementById('input-overlay');
+  ov.classList.add('open');
+  setTimeout(() => inp.focus(), 350);
+}
+
+function closeInput(e) {
+  if (e && e.target !== document.getElementById('input-overlay')) return;
+  document.getElementById('input-overlay').classList.remove('open');
+  _inputKey = null;
+}
+
+function saveInput() {
+  const val = parseFloat(document.getElementById('amount-input').value) || 0;
+  if (_inputKey) {
+    STATE.actuals[_inputKey] = val;
+    save();
+  }
+  document.getElementById('input-overlay').classList.remove('open');
+  _inputKey = null;
+  render();
+}
+
+document.getElementById('amount-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') saveInput();
+  if (e.key === 'Escape') closeInput();
+});
+
+// Plan tab interactions
+function togglePlanDrop() {
+  STATE.planDropOpen = !STATE.planDropOpen;
+  render();
+  if (STATE.planDropOpen) setTimeout(() => document.getElementById('content').scrollTop = 0, 10);
+}
+
+function setPlanYear(y) {
+  STATE.planYearFilter = y;
+  render();
+}
+
+function selectPlanMonth(idx) {
+  STATE.planIdx = idx;
+  STATE.planDropOpen = false;
+  STATE.planYearFilter = null;
+  save();
+  render();
+}
+
+function toggleColl(key) {
+  STATE.openCollapsibles[key] = !STATE.openCollapsibles[key];
+  render();
+}
+
+
+// ══════════════════════════════════════════════
+// PIN AUTHENTICATION
+// ══════════════════════════════════════════════
+const PIN_KEY = 'sams_pin_hash';
+
+// Simple hash — XOR + shift, not cryptographic but prevents casual snooping
+function hashPin(pin) {
+  let h = 0x5f3759df;
+  for (let i = 0; i < pin.length; i++) {
+    h = ((h << 5) - h) + pin.charCodeAt(i);
+    h |= 0;
+  }
+  return h.toString(36);
+}
+
+let pinBuffer = '';
+let pinMode = 'enter';   // 'setup' | 'confirm' | 'enter'
+let pinSetupFirst = '';
+let isUnlocked = false;
+
+function initPin() {
+  const stored = localStorage.getItem(PIN_KEY);
+  if (!stored) {
+    // First launch — set up a new PIN
+    pinMode = 'setup';
+    document.getElementById('pin-subtitle').textContent = 'Create a 4-digit PIN to protect your dashboard';
+    document.getElementById('pin-setup-step').style.display = 'block';
+    document.getElementById('pin-setup-step').textContent = 'Step 1 of 2 — Enter new PIN';
+    document.getElementById('pin-forgot').style.display = 'none';
+  } else {
+    pinMode = 'enter';
+    document.getElementById('pin-subtitle').textContent = 'Enter your PIN to unlock';
+    document.getElementById('pin-setup-step').style.display = 'none';
+  }
+}
+
+function updateDots(state) {
+  // state: 'normal' | 'error' | 'success'
+  for (let i = 0; i < 4; i++) {
+    const d = document.getElementById('d' + i);
+    d.className = 'pin-dot';
+    if (i < pinBuffer.length) {
+      d.classList.add(state === 'error' ? 'error' : state === 'success' ? 'success' : 'filled');
+    }
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('pin-error');
+  el.textContent = msg;
+  el.classList.add('visible');
+  const dots = document.getElementById('pin-dots');
+  dots.classList.add('shake');
+  setTimeout(() => {
+    dots.classList.remove('shake');
+    el.classList.remove('visible');
+    pinBuffer = '';
+    updateDots('normal');
+  }, 800);
+}
+
+function pinKey(digit) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += digit;
+  updateDots('normal');
+  if (pinBuffer.length === 4) {
+    setTimeout(() => handlePinComplete(), 120);
+  }
+}
+
+function pinDel() {
+  if (pinBuffer.length > 0) {
+    pinBuffer = pinBuffer.slice(0, -1);
+    updateDots('normal');
+    document.getElementById('pin-error').classList.remove('visible');
+  }
+}
+
+function handlePinComplete() {
+  if (pinMode === 'setup') {
+    pinSetupFirst = pinBuffer;
+    pinBuffer = '';
+    pinMode = 'confirm';
+    document.getElementById('pin-subtitle').textContent = 'Confirm your PIN';
+    document.getElementById('pin-setup-step').textContent = 'Step 2 of 2 — Re-enter to confirm';
+    updateDots('normal');
+
+  } else if (pinMode === 'confirm') {
+    if (pinBuffer === pinSetupFirst) {
+      // Save and unlock
+      localStorage.setItem(PIN_KEY, hashPin(pinBuffer));
+      updateDots('success');
+      setTimeout(unlockDashboard, 400);
+    } else {
+      showError('PINs don\'t match — try again');
+      pinMode = 'setup';
+      pinSetupFirst = '';
+      document.getElementById('pin-subtitle').textContent = 'Create a 4-digit PIN to protect your dashboard';
+      document.getElementById('pin-setup-step').textContent = 'Step 1 of 2 — Enter new PIN';
+    }
+
+  } else {
+    // Entering existing PIN
+    const stored = localStorage.getItem(PIN_KEY);
+    if (hashPin(pinBuffer) === stored) {
+      updateDots('success');
+      setTimeout(unlockDashboard, 400);
+    } else {
+      showError('Incorrect PIN — try again');
+    }
+  }
+}
+
+function unlockDashboard() {
+  isUnlocked = true;
+  const screen = document.getElementById('pin-screen');
+  screen.classList.add('unlocking');
+  setTimeout(() => {
+    screen.classList.add('hidden');
+    render();
+  }, 350);
+}
+
+function resetPin() {
+  if (confirm('Reset your PIN? You will be asked to create a new one.')) {
+    localStorage.removeItem(PIN_KEY);
+    pinBuffer = '';
+    pinSetupFirst = '';
+    pinMode = 'setup';
+    document.getElementById('pin-subtitle').textContent = 'Create a 4-digit PIN to protect your dashboard';
+    document.getElementById('pin-setup-step').style.display = 'block';
+    document.getElementById('pin-setup-step').textContent = 'Step 1 of 2 — Enter new PIN';
+    document.getElementById('pin-forgot').style.display = 'none';
+    updateDots('normal');
+    document.getElementById('pin-error').classList.remove('visible');
+  }
+}
+
+// Lock after 5 minutes of inactivity when app is in background
+let lockTimer = null;
+const LOCK_AFTER_MS = 5 * 60 * 1000;
+
+function resetLockTimer() {
+  clearTimeout(lockTimer);
+  if (isUnlocked) {
+    lockTimer = setTimeout(lockApp, LOCK_AFTER_MS);
+  }
+}
+
+function lockApp() {
+  if (!isUnlocked) return;
+  isUnlocked = false;
+  pinBuffer = '';
+  pinMode = 'enter';
+  document.getElementById('pin-subtitle').textContent = 'Enter your PIN to unlock';
+  document.getElementById('pin-setup-step').style.display = 'none';
+  document.getElementById('pin-forgot').style.display = 'block';
+  updateDots('normal');
+  document.getElementById('pin-error').classList.remove('visible');
+  document.getElementById('pin-screen').classList.remove('hidden', 'unlocking');
+}
+
+// Lock when app goes to background (iPhone home button / swipe up)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    resetLockTimer();
+  } else {
+    clearTimeout(lockTimer);
+  }
+});
+
+document.addEventListener('touchstart', resetLockTimer, { passive: true });
+
+initPin();
+
+// ══════════════════════════════════════════════
+// INSTALL PROMPT
+// ══════════════════════════════════════════════
+function dismissInstall() {
+  document.getElementById('install-banner').classList.add('hidden');
+  localStorage.setItem('install_dismissed', '1');
+}
+
+// Show install hint on iOS Safari (not in standalone mode)
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.navigator.standalone;
+const dismissed = localStorage.getItem('install_dismissed');
+if (isIOS && !isStandalone && !dismissed) {
+  setTimeout(() => {
+    document.getElementById('install-banner').classList.remove('hidden');
+    // Auto-hide after 8 seconds
+    setTimeout(() => document.getElementById('install-banner').classList.add('hidden'), 8000);
+  }, 2000);
+}
+
+// ══════════════════════════════════════════════
+// SERVICE WORKER REGISTRATION
+// ══════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+// render() is called by unlockDashboard() after PIN auth
+// (initPin() above handles showing the PIN screen first);
+</script>
+</body>
+</html>
