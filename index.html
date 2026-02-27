@@ -544,6 +544,155 @@
     font-family: inherit; letter-spacing: -0.5px; margin-bottom: 14px;
   }
 
+
+  /* ── Editable budget field ── */
+  .budget-editable {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(66,165,245,0.12); border: 1px dashed rgba(66,165,245,0.5);
+    border-radius: 7px; padding: 3px 8px; cursor: pointer;
+    color: #42A5F5; font-weight: 700; font-size: 12px;
+    transition: all 0.15s;
+  }
+  .budget-editable:active { background: rgba(66,165,245,0.25); }
+
+  /* ── Delete item button ── */
+  .del-item-btn {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid rgba(239,83,80,0.3);
+    background: rgba(239,83,80,0.08);
+    color: #EF5350; font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.15s; font-family: inherit;
+    line-height: 1;
+  }
+  .del-item-btn:active { background: rgba(239,83,80,0.25); transform: scale(0.9); }
+
+  /* ── Add item button ── */
+  .add-item-btn {
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;
+    background: transparent; border: 1px dashed rgba(76,175,80,0.4);
+    border-radius: 10px; padding: 9px; cursor: pointer; margin-top: 8px;
+    color: #4CAF50; font-size: 12px; font-weight: 600; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .add-item-btn:active { background: rgba(76,175,80,0.1); }
+
+  /* ── Budget edit overlay ── */
+  #budget-edit-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    z-index: 300; display: flex; align-items: flex-end;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  #budget-edit-overlay.open { opacity: 1; pointer-events: all; }
+  #budget-edit-sheet {
+    width: 100%; background: #0d1f10;
+    border-top: 2px solid rgba(66,165,245,0.5); border-radius: 20px 20px 0 0;
+    padding: 20px 20px calc(20px + var(--safe-bottom));
+    transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  #budget-edit-overlay.open #budget-edit-sheet { transform: translateY(0); }
+  .be-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .be-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+  .be-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .be-field-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .be-input {
+    width: 100%; background: rgba(13,31,16,0.8);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    color: var(--text); font-size: 16px; font-weight: 600;
+    padding: 12px 14px; outline: none; font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .be-input:focus { border-color: #42A5F5; }
+  .be-input.gold:focus { border-color: var(--gold); }
+
+  /* ── Daily Expenses Tab ── */
+  .expense-form {
+    background: rgba(13,31,16,0.9); border: 1px solid var(--border);
+    border-radius: 16px; padding: 16px; margin-bottom: 12px;
+  }
+  .expense-form-title { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
+  .exp-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .exp-field-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.3px; }
+  .exp-input {
+    width: 100%; background: rgba(7,15,9,0.8);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    color: var(--text); font-size: 15px; padding: 11px 13px;
+    outline: none; font-family: inherit; transition: border-color 0.15s;
+  }
+  .exp-input:focus { border-color: var(--gold); }
+  .exp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .btn-add-expense {
+    width: 100%; padding: 14px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--midgreen), var(--green));
+    border: none; color: #fff; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    box-shadow: 0 4px 16px rgba(46,125,50,0.4);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-add-expense:active { transform: scale(0.98); }
+
+  /* Expense list */
+  .expense-list { display: flex; flex-direction: column; gap: 8px; }
+  .expense-card {
+    background: rgba(13,31,16,0.9); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .exp-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(249,168,37,0.15); border: 1px solid rgba(249,168,37,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .exp-info { flex: 1; min-width: 0; }
+  .exp-desc { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .exp-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .exp-amount { font-size: 16px; font-weight: 800; color: var(--gold); flex-shrink: 0; }
+  .exp-del {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid rgba(239,83,80,0.3); background: rgba(239,83,80,0.08);
+    color: #EF5350; font-size: 14px; cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-family: inherit;
+  }
+  .exp-del:active { background: rgba(239,83,80,0.25); }
+
+  /* Daily expenses summary strip */
+  .daily-summary {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;
+  }
+  .daily-stat {
+    background: rgba(13,31,16,0.9); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 8px; text-align: center;
+  }
+  .daily-stat-val { font-size: 18px; font-weight: 800; }
+  .daily-stat-label { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+
+  /* Filter bar */
+  .filter-bar {
+    display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; padding-bottom: 2px;
+  }
+  .filter-chip {
+    flex-shrink: 0; padding: 6px 14px; border-radius: 99px;
+    border: 1px solid var(--border); background: rgba(13,31,16,0.8);
+    color: var(--muted); font-size: 12px; font-weight: 600;
+    cursor: pointer; white-space: nowrap; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .filter-chip.active {
+    background: rgba(249,168,37,0.15); border-color: rgba(249,168,37,0.5);
+    color: var(--gold);
+  }
+
+  /* Budget column header update */
+  .budget-item-5col {
+    display: grid;
+    grid-template-columns: 1fr 68px 74px 52px 28px;
+    gap: 3px; align-items: center;
+    padding: 9px 0; border-bottom: 1px solid #1a332030; font-size: 12px;
+  }
+  .budget-item-5col:last-child { border-bottom: none; }
+
   /* Install prompt */
   #install-banner {
     position: fixed; bottom: 0; left: 0; right: 0;
@@ -626,6 +775,10 @@
       <span class="nav-icon">◇</span>
       <span class="nav-label">Monthly</span>
     </button>
+    <button class="nav-btn" data-tab="daily" onclick="switchTab('daily')">
+      <span class="nav-icon">✦</span>
+      <span class="nav-label">Daily</span>
+    </button>
   </nav>
 </div>
 
@@ -642,6 +795,27 @@
   </div>
 </div>
 
+
+
+<!-- Budget item edit overlay -->
+<div id="budget-edit-overlay" onclick="closeBudgetEdit(event)">
+  <div id="budget-edit-sheet" onclick="event.stopPropagation()">
+    <div class="be-label" id="be-sec-label">Category</div>
+    <div class="be-title" id="be-mode-title">Edit Budget Item</div>
+    <div class="be-row">
+      <div class="be-field-label">Item Name</div>
+      <input class="be-input" id="be-name-input" type="text" placeholder="e.g. Rent">
+    </div>
+    <div class="be-row">
+      <div class="be-field-label">Budget Amount (₵)</div>
+      <input class="be-input gold" id="be-amount-input" type="number" inputmode="decimal" placeholder="0">
+    </div>
+    <div class="input-actions">
+      <button class="btn-cancel" onclick="closeBudgetEdit()">Cancel</button>
+      <button class="btn-save" id="be-save-btn" onclick="saveBudgetEdit()">Save</button>
+    </div>
+  </div>
+</div>
 
 <!-- Income edit overlay -->
 <div id="income-overlay" onclick="closeIncomeEdit(event)">
@@ -723,17 +897,48 @@ let STATE = {
   planYearFilter: null,
   openCollapsibles: {breakdown:true, redirect:true, preview:false, invprog:false},
   currentTab: 'overview',
+  dailyExpenses: [],   // [{id, desc, amount, date, category}]
+  dailyFilter: 'all',  // 'all' | 'today' | 'week' | 'month'
+  customSections: null, // overrides SECTIONS if set
 };
 
-try { const s = localStorage.getItem('sams_dash'); if (s) { const p = JSON.parse(s); STATE = {...STATE, ...p}; if (p.income) INCOME = p.income; } } catch(e) {}
+try {
+  const s = localStorage.getItem('sams_dash');
+  if (s) {
+    const p = JSON.parse(s);
+    STATE = {...STATE, ...p};
+    if (p.income) INCOME = p.income;
+    // Restore custom sections if saved
+    if (p.customSections) {
+      // rebuild SECTIONS from saved data
+      SECTIONS.length = 0;
+      p.customSections.forEach(s => SECTIONS.push(s));
+    }
+  }
+} catch(e) {}
 
 function save() {
-  try { localStorage.setItem('sams_dash', JSON.stringify({actuals:STATE.actuals, invMonth:STATE.invMonth, planIdx:STATE.planIdx, income:INCOME})); } catch(e) {}
+  try {
+  localStorage.setItem('sams_dash', JSON.stringify({
+    actuals: STATE.actuals,
+    invMonth: STATE.invMonth,
+    planIdx: STATE.planIdx,
+    income: INCOME,
+    dailyExpenses: STATE.dailyExpenses,
+    dailyFilter: STATE.dailyFilter,
+    customSections: SECTIONS.map(s => ({...s, items: s.items.map(i => ({...i}))})),
+  }));
+} catch(e) {}
 }
 
 // ── Derived values ──
 function totalBudget() { return SECTIONS.reduce((a,s) => a + s.items.reduce((b,i) => b+i.b, 0), 0); }
-function totalActual() { return Object.values(STATE.actuals).reduce((a,v) => a+v, 0); }
+function totalActual() {
+  const budgetActuals = Object.values(STATE.actuals).reduce((a,v) => a+v, 0);
+  const dailyTotal = STATE.dailyExpenses.reduce((a,e) => a+e.amount, 0);
+  return budgetActuals + dailyTotal;
+}
+function dailyTotalAmount() { return STATE.dailyExpenses.reduce((a,e) => a+e.amount, 0); }
 function balance() { return INCOME - totalActual(); }
 function secBudget(sid) { return SECTIONS.find(s=>s.id===sid)?.items.reduce((a,i)=>a+i.b,0)||0; }
 function secActual(sid) { const sec=SECTIONS.find(s=>s.id===sid); return sec ? sec.items.reduce((a,i)=>a+(STATE.actuals[sid+'_'+i.n]||0),0) : 0; }
@@ -866,7 +1071,28 @@ function renderOverview() {
     <div style="display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px">
       ${SECTIONS.map(s=>`<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:${C.muted}"><div style="width:7px;height:7px;border-radius:2px;background:${s.color}"></div>${s.icon} ${s.label}</div>`).join('')}
     </div>
-  </div>`;
+  </div>
+
+  ${STATE.dailyExpenses.length > 0 ? `
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="card-title" style="margin:0">Recent Daily Expenses</div>
+      <button onclick="switchTab('daily')" style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3);border-radius:8px;padding:5px 10px;color:${C.gold};font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">View All →</button>
+    </div>
+    ${STATE.dailyExpenses.slice(-3).reverse().map(e => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #1a332030">
+      <div style="width:32px;height:32px;border-radius:9px;background:rgba(249,168,37,0.12);border:1px solid rgba(249,168,37,0.25);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🧾</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:${C.text};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.desc}</div>
+        <div style="font-size:11px;color:${C.muted}">${e.date}</div>
+      </div>
+      <div style="font-size:14px;font-weight:800;color:${C.gold};flex-shrink:0">₵${fmt(e.amount)}</div>
+    </div>`).join('')}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid #1a3320">
+      <span style="font-size:12px;color:${C.muted}">${STATE.dailyExpenses.length} total entries</span>
+      <span style="font-size:13px;font-weight:800;color:${C.gold}">₵${fmt(dailyTotalAmount())} total</span>
+    </div>
+  </div>` : ''}`;
 }
 
 // ══════════════════════════════════════════════
@@ -1233,6 +1459,221 @@ function renderPlan() {
   return html;
 }
 
+
+// ══════════════════════════════════════════════
+// TAB: DAILY EXPENSES
+// ══════════════════════════════════════════════
+function renderDaily() {
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0,10);
+  const weekAgo = new Date(now - 7*86400000).toISOString().slice(0,10);
+  const monthStr = todayStr.slice(0,7);
+
+  function filterExpenses(exps) {
+    switch(STATE.dailyFilter) {
+      case 'today': return exps.filter(e => e.date === todayStr);
+      case 'week':  return exps.filter(e => e.date >= weekAgo);
+      case 'month': return exps.filter(e => e.date.startsWith(monthStr));
+      default: return exps;
+    }
+  }
+
+  const filtered = filterExpenses(STATE.dailyExpenses);
+  const filteredTotal = filtered.reduce((a,e) => a+e.amount, 0);
+  const todayTotal = STATE.dailyExpenses.filter(e=>e.date===todayStr).reduce((a,e)=>a+e.amount,0);
+  const monthTotal = STATE.dailyExpenses.filter(e=>e.date.startsWith(monthStr)).reduce((a,e)=>a+e.amount,0);
+
+  // Sort filtered newest first
+  const sorted = [...filtered].sort((a,b) => b.date.localeCompare(a.date) || b.id - a.id);
+
+  return `
+  <!-- Quick stats -->
+  <div class="daily-summary">
+    <div class="daily-stat">
+      <div class="daily-stat-val" style="color:#F9A825">₵${fmt(todayTotal)}</div>
+      <div class="daily-stat-label">Today</div>
+    </div>
+    <div class="daily-stat">
+      <div class="daily-stat-val" style="color:#42A5F5">₵${fmt(monthTotal)}</div>
+      <div class="daily-stat-label">This Month</div>
+    </div>
+    <div class="daily-stat">
+      <div class="daily-stat-val" style="color:#4CAF50">${STATE.dailyExpenses.length}</div>
+      <div class="daily-stat-label">Total Entries</div>
+    </div>
+  </div>
+
+  <!-- Add expense form -->
+  <div class="expense-form">
+    <div class="expense-form-title">+ Log New Expense</div>
+    <div class="exp-field">
+      <div class="exp-field-label">Description</div>
+      <input class="exp-input" id="exp-desc" type="text" placeholder="e.g. Lunch, Fuel, Market" maxlength="60">
+    </div>
+    <div class="exp-row">
+      <div class="exp-field">
+        <div class="exp-field-label">Amount (₵)</div>
+        <input class="exp-input" id="exp-amount" type="number" inputmode="decimal" placeholder="0.00" min="0">
+      </div>
+      <div class="exp-field">
+        <div class="exp-field-label">Date</div>
+        <input class="exp-input" id="exp-date" type="date" value="${todayStr}">
+      </div>
+    </div>
+    <button class="btn-add-expense" onclick="addDailyExpense()">
+      <span>✦</span> Log Expense
+    </button>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="filter-bar">
+    ${['all','today','week','month'].map(f => `
+    <button class="filter-chip${STATE.dailyFilter===f?' active':''}" onclick="setDailyFilter('${f}')">
+      ${f==='all'?'All time':f==='today'?'Today':f==='week'?'This week':'This month'}
+    </button>`).join('')}
+  </div>
+
+  <!-- Expense list -->
+  ${sorted.length === 0 ? `
+  <div style="text-align:center;padding:40px 20px;color:${C.muted}">
+    <div style="font-size:36px;margin-bottom:12px">🧾</div>
+    <div style="font-size:14px;font-weight:600">No expenses yet</div>
+    <div style="font-size:12px;margin-top:4px">Log your first expense above</div>
+  </div>` : `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div style="font-size:12px;color:${C.muted}">${sorted.length} expense${sorted.length!==1?'s':''}</div>
+    <div style="font-size:13px;font-weight:800;color:${C.gold}">₵${fmt(filteredTotal)} total</div>
+  </div>
+  <div class="expense-list">
+    ${sorted.map(e => `
+    <div class="expense-card">
+      <div class="exp-icon">🧾</div>
+      <div class="exp-info">
+        <div class="exp-desc">${e.desc}</div>
+        <div class="exp-date">${formatDate(e.date)}</div>
+      </div>
+      <div class="exp-amount">₵${fmt(e.amount)}</div>
+      <button class="exp-del" onclick="deleteDailyExpense(${e.id})">×</button>
+    </div>`).join('')}
+  </div>`}`;
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const today = new Date().toISOString().slice(0,10);
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  if (dateStr === today) return 'Today';
+  if (dateStr === yesterday) return 'Yesterday';
+  return d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+}
+
+function addDailyExpense() {
+  const desc = document.getElementById('exp-desc')?.value?.trim();
+  const amount = parseFloat(document.getElementById('exp-amount')?.value);
+  const date = document.getElementById('exp-date')?.value;
+  if (!desc) { document.getElementById('exp-desc').focus(); return; }
+  if (!amount || amount <= 0) { document.getElementById('exp-amount').focus(); return; }
+  if (!date) return;
+  const id = Date.now();
+  STATE.dailyExpenses.push({id, desc, amount, date});
+  save();
+  // Clear form fields
+  document.getElementById('exp-desc').value = '';
+  document.getElementById('exp-amount').value = '';
+  render();
+  // Scroll to list
+  setTimeout(() => {
+    const content = document.getElementById('content');
+    content.scrollTop = content.scrollHeight;
+  }, 50);
+}
+
+function deleteDailyExpense(id) {
+  STATE.dailyExpenses = STATE.dailyExpenses.filter(e => e.id !== id);
+  save();
+  render();
+}
+
+function setDailyFilter(f) {
+  STATE.dailyFilter = f;
+  render();
+}
+
+// ══════════════════════════════════════════════
+// BUDGET EDITOR (name + amount + add + delete)
+// ══════════════════════════════════════════════
+let _beSecId = null, _beItemIdx = null, _beMode = null;
+
+function openBudgetEdit(secId, itemIdx, mode) {
+  _beSecId = secId;
+  _beItemIdx = itemIdx;
+  _beMode = mode;
+  const sec = SECTIONS.find(s => s.id === secId);
+  document.getElementById('be-sec-label').textContent = sec?.label || secId;
+  document.getElementById('be-mode-title').textContent = mode === 'add' ? 'Add New Budget Item' : 'Edit Budget Item';
+  document.getElementById('be-save-btn').textContent = mode === 'add' ? 'Add Item' : 'Save Changes';
+  if (mode === 'edit' && itemIdx >= 0) {
+    const item = sec.items[itemIdx];
+    document.getElementById('be-name-input').value = item.n;
+    document.getElementById('be-amount-input').value = item.b;
+  } else {
+    document.getElementById('be-name-input').value = '';
+    document.getElementById('be-amount-input').value = '';
+  }
+  const ov = document.getElementById('budget-edit-overlay');
+  ov.classList.add('open');
+  setTimeout(() => document.getElementById('be-name-input').focus(), 350);
+}
+
+function closeBudgetEdit(e) {
+  if (e && e.target !== document.getElementById('budget-edit-overlay')) return;
+  document.getElementById('budget-edit-overlay').classList.remove('open');
+  _beSecId = null; _beItemIdx = null; _beMode = null;
+}
+
+function saveBudgetEdit() {
+  const name = document.getElementById('be-name-input').value.trim();
+  const amount = parseFloat(document.getElementById('be-amount-input').value);
+  if (!name || !amount || amount <= 0) return;
+  const sec = SECTIONS.find(s => s.id === _beSecId);
+  if (!sec) return;
+  if (_beMode === 'add') {
+    sec.items.push({n: name, b: amount});
+  } else if (_beMode === 'edit' && _beItemIdx >= 0) {
+    const oldName = sec.items[_beItemIdx].n;
+    // Transfer actuals if name changed
+    if (oldName !== name) {
+      const oldKey = _beSecId + '_' + oldName;
+      const newKey = _beSecId + '_' + name;
+      if (STATE.actuals[oldKey] !== undefined) {
+        STATE.actuals[newKey] = STATE.actuals[oldKey];
+        delete STATE.actuals[oldKey];
+      }
+    }
+    sec.items[_beItemIdx].n = name;
+    sec.items[_beItemIdx].b = amount;
+  }
+  save();
+  document.getElementById('budget-edit-overlay').classList.remove('open');
+  _beSecId = null; _beItemIdx = null; _beMode = null;
+  render();
+}
+
+function deleteItem(secId, itemIdx) {
+  const sec = SECTIONS.find(s => s.id === secId);
+  if (!sec || !sec.items[itemIdx]) return;
+  const itemName = sec.items[itemIdx].n;
+  // Remove actuals for this item
+  delete STATE.actuals[secId + '_' + itemName];
+  sec.items.splice(itemIdx, 1);
+  save();
+  render();
+}
+
+// Keyboard for budget edit overlay
+document.getElementById('be-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('be-amount-input').focus(); });
+document.getElementById('be-amount-input').addEventListener('keydown', e => { if (e.key === 'Enter') saveBudgetEdit(); if (e.key === 'Escape') closeBudgetEdit(); });
+
 // ══════════════════════════════════════════════
 // RENDER ENGINE
 // ══════════════════════════════════════════════
@@ -1244,6 +1685,7 @@ function render() {
   else if (tab === 'budget') html = renderBudget();
   else if (tab === 'investments') html = renderInvestments();
   else if (tab === 'plan') html = renderPlan();
+  else if (tab === 'daily') html = renderDaily();
   content.innerHTML = html;
 
   // Update header balance
