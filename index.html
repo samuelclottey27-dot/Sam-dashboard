@@ -33,7 +33,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 [data-theme="light"] #app::before{background:radial-gradient(ellipse 70% 50% at 10% 10%,#2E7D3210 0%,transparent 60%)}
 
 /* Header */
-#header{flex-shrink:0;padding:12px 14px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(7,15,9,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;z-index:10}
+#header{flex-shrink:0;padding:10px 14px 9px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(7,15,9,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;z-index:10}
 [data-theme="light"] #header{background:rgba(240,244,240,0.97)}
 .hdr-left{display:flex;align-items:center;gap:9px}
 .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#F9A825,#2E7D32);display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 14px #F9A82540;flex-shrink:0}
@@ -41,7 +41,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 [data-theme="light"] .hdr-title{color:var(--text)}
 .hdr-right{display:flex;align-items:center;gap:8px}
 .theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.06);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.bal-chip{background:linear-gradient(135deg,#7B600040,#F9A82520);border:1px solid #F9A82540;border-radius:9px;padding:5px 10px;text-align:right;cursor:pointer}
+.bal-chip{background:linear-gradient(135deg,#7B600040,#F9A82520);border:1px solid #F9A82540;border-radius:9px;padding:5px 10px;text-align:right}
 .bal-label{font-size:9px;color:var(--gold);font-weight:600;letter-spacing:0.8px;text-transform:uppercase}
 .bal-value{font-size:17px;font-weight:800;letter-spacing:-0.5px}
 
@@ -52,7 +52,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 @keyframes slideDown{from{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:translateY(0)}}
 
 /* Content */
-#content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:13px 13px 18px;position:relative;z-index:1;touch-action:pan-y}
+#content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:14px 14px 20px;position:relative;z-index:1;touch-action:pan-y}
 
 /* Nav */
 #nav{flex-shrink:0;display:flex;background:rgba(10,22,12,0.97);border-top:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding-bottom:calc(var(--sb) + 2px);position:relative;z-index:10}
@@ -62,11 +62,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .nav-btn.active::before{width:22px}
 .nav-btn .ni{font-size:18px;transition:transform 0.2s}
 .nav-btn.active .ni{transform:scale(1.12)}
-.nav-btn .nl{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:0.2px}
+.nav-btn .nl{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.2px}
 .nav-btn.active .nl{color:var(--gold)}
+.nav-btn.active{background:rgba(249,168,37,0.05)}
 
 /* Cards */
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px;margin-bottom:11px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
 .card.glow{border-color:#F9A82550;box-shadow:0 0 18px #F9A82512}
 .card-title{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:13px}
 
@@ -109,7 +110,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .bsh-l{display:flex;align-items:center;gap:7px}
 .bsh-ttl{font-size:13px;font-weight:700}
 .bsh-tot{font-size:13px;font-weight:800}
-.budget-5col{display:grid;grid-template-columns:1fr 64px 72px 50px 26px;gap:2px;align-items:center;padding:8px 0;border-bottom:1px solid #1a332025;font-size:12px}
+.budget-5col{display:grid;grid-template-columns:1fr 60px 68px 46px 24px;gap:3px;align-items:center;padding:9px 0;border-bottom:1px solid #1a332025;font-size:12px}
 .budget-5col:last-of-type{border-bottom:none}
 .bud-editable{display:inline-flex;align-items:center;gap:3px;background:rgba(66,165,245,0.1);border:1px dashed rgba(66,165,245,0.45);border-radius:7px;padding:3px 7px;cursor:pointer;color:#42A5F5;font-weight:700;font-size:11px;transition:all 0.15s}
 .bud-editable:active{background:rgba(66,165,245,0.22)}
@@ -127,7 +128,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .gt-val{font-size:17px;font-weight:800}
 
 /* Daily expenses */
-.exp-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px;margin-bottom:11px}
+.exp-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:13px}
 .exp-field{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
 .exp-lbl{font-size:11px;color:var(--muted);font-weight:600}
 .exp-inp{width:100%;background:rgba(7,15,9,0.6);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:15px;padding:10px 12px;outline:none;font-family:inherit;transition:border-color 0.15s}
@@ -316,6 +317,58 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .ipc-val{font-size:15px;font-weight:800;color:var(--gold)}
 .ipc-sub{font-size:10px;color:var(--muted);margin-top:1px}
 
+/* ── Overview redesign ── */
+  .hero-card{background:linear-gradient(145deg,rgba(13,31,16,0.95),rgba(27,94,32,0.4));border:1px solid rgba(249,168,37,0.35);border-radius:20px;padding:20px 18px 18px;margin-bottom:11px;box-shadow:0 4px 32px rgba(249,168,37,0.08);position:relative;overflow:hidden}
+  .hero-card::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(249,168,37,0.12),transparent 70%);pointer-events:none}
+  .hero-month-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .hero-month-label{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.8px}
+  .hero-new-month-btn{background:rgba(249,168,37,0.12);border:1px solid rgba(249,168,37,0.3);border-radius:8px;padding:5px 10px;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+  .hero-new-month-btn:active{background:rgba(249,168,37,0.25)}
+  .hero-balance-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .hero-balance-value{font-size:42px;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:14px}
+  .hero-stats-row{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;gap:0;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07)}
+  .hero-stat{text-align:center;padding:0 4px}
+  .hero-stat-val{font-size:15px;font-weight:800;letter-spacing:-0.3px}
+  .hero-stat-lbl{font-size:10px;color:var(--muted);font-weight:600;margin-top:2px}
+  .hero-divider{background:rgba(255,255,255,0.08);width:1px}
+  .hero-prog-row{margin-top:12px}
+  .hero-prog-label{display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;color:var(--muted)}
+  .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
+  .quick-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:15px 13px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all 0.15s}
+  .quick-card:active{transform:scale(0.97)}
+  .quick-card-ico{font-size:22px;flex-shrink:0}
+  .quick-card-val{font-size:16px;font-weight:800;letter-spacing:-0.4px}
+  .quick-card-lbl{font-size:10px;color:var(--muted);font-weight:600;margin-top:1px}
+  .pulse-strip{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:3px;margin-bottom:11px;scroll-snap-type:x mandatory}
+  .pulse-strip::-webkit-scrollbar{display:none}
+  .pulse-chip{flex-shrink:0;scroll-snap-align:start;display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:8px 13px 8px 10px;cursor:pointer;transition:all 0.15s}
+  .pulse-chip.over{border-color:rgba(239,83,80,0.45);background:rgba(239,83,80,0.07)}
+  .pulse-chip.near{border-color:rgba(249,168,37,0.4);background:rgba(249,168,37,0.07)}
+  .pulse-chip-ico{font-size:15px;flex-shrink:0}
+  .pulse-chip-info{display:flex;flex-direction:column;min-width:0}
+  .pulse-chip-name{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap}
+  .pulse-chip-pct{font-size:10px;color:var(--muted);margin-top:1px}
+  .pulse-chip-arc{width:28px;height:28px;flex-shrink:0}
+  .cat-ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:11px}
+  .cat-ring-cell{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:10px 4px 8px;background:var(--card);border:1px solid var(--border);border-radius:14px;transition:all 0.15s;position:relative}
+  .cat-ring-cell:active{transform:scale(0.95)}
+  .cat-ring-cell.over{border-color:rgba(239,83,80,0.4);background:rgba(239,83,80,0.06)}
+  .cat-ring-cell.near{border-color:rgba(249,168,37,0.35);background:rgba(249,168,37,0.05)}
+  .cat-ring-name{font-size:10px;font-weight:600;color:var(--muted);text-align:center;line-height:1.2}
+  .cat-ring-amt{font-size:11px;font-weight:700;text-align:center}
+  .cat-alert-pip{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;animation:pulse 1.5s ease-in-out infinite}
+  .ov-coll{margin-bottom:9px}
+  .ov-coll-hdr{width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+  .ov-coll.open .ov-coll-hdr{border-radius:14px 14px 0 0;border-bottom-color:transparent;background:rgba(249,168,37,0.06);border-color:rgba(249,168,37,0.3)}
+  .ov-coll-hdr-l{display:flex;align-items:center;gap:8px}
+  .ov-coll-ttl{font-size:13px;font-weight:700;color:var(--text);text-align:left}
+  .ov-coll-sub{font-size:11px;color:var(--muted);text-align:left}
+  .ov-coll-chev{font-size:13px;color:var(--gold);transition:transform 0.3s;font-weight:900}
+  .ov-coll.open .ov-coll-chev{transform:rotate(180deg)}
+  .ov-coll-body{background:var(--card);border:1px solid rgba(249,168,37,0.3);border-top:none;border-radius:0 0 14px 14px;max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1)}
+  .ov-coll.open .ov-coll-body{max-height:900px}
+  .ov-coll-inner{padding:13px 14px 14px}
+
 /* Swipe indicator */
 #swipe-hint{position:fixed;bottom:calc(60px + var(--sb));left:50%;transform:translateX(-50%);font-size:11px;color:var(--muted);opacity:0;transition:opacity 0.5s;pointer-events:none;z-index:5}
 
@@ -364,7 +417,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 
 <!-- App Shell -->
 <div id="app">
-  <div id="alert-banner" id="alert-banner"></div>
+  <div id="alert-banner"></div>
 
   <div id="header">
     <div class="hdr-left">
@@ -373,21 +426,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
     </div>
     <div class="hdr-right">
       <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
-      <div class="bal-chip" onclick="openIncomeEdit()">
-        <div class="bal-label">Balance ✏️</div>
-        <div class="bal-value" id="hdr-bal" style="color:#F9A825">—</div>
-      </div>
+      <div id="hdr-bal" style="display:none"></div>
     </div>
   </div>
 
   <div id="content"></div>
 
   <nav id="nav">
-    <button class="nav-btn active" data-tab="overview" onclick="goTab('overview')"><span class="ni">◈</span><span class="nl">Overview</span></button>
-    <button class="nav-btn" data-tab="budget" onclick="goTab('budget')"><span class="ni">◉</span><span class="nl">Budget</span></button>
-    <button class="nav-btn" data-tab="daily" onclick="goTab('daily')"><span class="ni">✦</span><span class="nl">Daily</span></button>
-    <button class="nav-btn" data-tab="invest" onclick="goTab('invest')"><span class="ni">◆</span><span class="nl">Invest</span></button>
-    <button class="nav-btn" data-tab="plan" onclick="goTab('plan')"><span class="ni">◇</span><span class="nl">Plan</span></button>
+    <button class="nav-btn active" data-tab="overview" onclick="goTab('overview')"><span class="ni">🏠</span><span class="nl">Home</span></button>
+    <button class="nav-btn" data-tab="budget" onclick="goTab('budget')"><span class="ni">📋</span><span class="nl">Budget</span></button>
+    <button class="nav-btn" data-tab="daily" onclick="goTab('daily')"><span class="ni">🧾</span><span class="nl">Daily</span></button>
+    <button class="nav-btn" data-tab="invest" onclick="goTab('invest')"><span class="ni">📈</span><span class="nl">Invest</span></button>
+    <button class="nav-btn" data-tab="plan" onclick="goTab('plan')"><span class="ni">📅</span><span class="nl">Plan</span></button>
   </nav>
 </div>
 
@@ -418,6 +468,26 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
     <div class="btn-row">
       <button class="btn-cancel" onclick="closeBudOv()">Cancel</button>
       <button class="btn-save" id="bud-save-btn" onclick="saveBudItem()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Investment vehicle edit overlay -->
+<div class="overlay" id="inv-ov" onclick="closeInvOv(event)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="sh-lbl">Investment Vehicle</div>
+    <div class="sh-title" id="inv-ov-title">Edit Vehicle</div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:5px">Vehicle Name</div>
+      <input class="sh-input sm blue" id="inv-name-inp" type="text" placeholder="e.g. Treasury Bills">
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:5px">Monthly Amount (₵)</div>
+      <input class="sh-input sm" id="inv-amt-inp" type="number" inputmode="decimal" placeholder="0">
+    </div>
+    <div class="btn-row">
+      <button class="btn-cancel" onclick="closeInvOv()">Cancel</button>
+      <button class="btn-save" onclick="saveInvVehicle()">Save ₵</button>
     </div>
   </div>
 </div>
@@ -463,6 +533,19 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 const MONTHS_N = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const CAT_ICONS = {food:'🍽️',transport:'🚗',personal:'💆',health:'🏥',social:'🎉',shopping:'🛍️',bills:'📄',other:'💰'};
 const CAT_COLORS = {food:'#FFA726',transport:'#42A5F5',personal:'#CE93D8',health:'#EF5350',social:'#F9A825',shopping:'#4CAF50',bills:'#7a9e7a',other:'#FFD54F'};
+
+// Maps daily expense categories → budget section IDs
+// Daily expenses in these categories automatically roll up into the matching budget section
+const CAT_TO_SECTION = {
+  food:      'personal',   // Groceries & Food lives in Personal & Lifestyle
+  transport: 'personal',   // Transport / Fuel lives in Personal & Lifestyle
+  personal:  'personal',   // Personal Care lives in Personal & Lifestyle
+  social:    'personal',   // Eating Out / Social lives in Personal & Lifestyle
+  shopping:  'personal',   // Miscellaneous lives in Personal & Lifestyle
+  health:    'personal',   // Health mapped to Personal & Lifestyle by default
+  bills:     'housing',    // Bills mapped to Housing & Fixed
+  other:     null,         // Other = not mapped, still counts toward total balance
+};
 const REDIRECTIONS = [
   {label:'Extra Investments',amount:600,pct:'30%',icon:'📈'},
   {label:'Emergency Fund Top-Up',amount:500,pct:'25%',icon:'🛡️'},
@@ -491,12 +574,13 @@ const DEFAULT_SECTIONS = [
     {n:'Groceries & Food',b:400,notes:''},{n:'Transport / Fuel',b:300,notes:''},{n:'Eating Out / Social',b:150,notes:''},{n:'Personal Care',b:100,notes:''},{n:'Miscellaneous',b:50,notes:''}]},
 ];
 
-const INV_VEHICLES = [
+const DEFAULT_INV_VEHICLES = [
   {name:'Stocks & ETFs',monthly:1000,color:'#F9A825'},
   {name:'Treasury Bills',monthly:500,color:'#4CAF50'},
   {name:'Money Market Fund',monthly:300,color:'#42A5F5'},
   {name:'Mutual Fund',monthly:200,color:'#CE93D8'},
 ];
+let INV_VEHICLES = JSON.parse(JSON.stringify(DEFAULT_INV_VEHICLES));
 
 // ═══════════════════════════════════════
 // STATE
@@ -509,7 +593,7 @@ let S = {
   actuals:{}, dailyExpenses:[], dailyFilter:'all', dailyExpCat:'other',
   monthHistory:[],
   planIdx:0, planDrop:false, planYear:null,
-  colls:{breakdown:true,redirect:true,preview:false,invprog:false},
+  colls:{breakdown:true,redirect:true,preview:false,invprog:false},ovColls:{cats:true,daily:false,history:false},
   currentMonthLabel:'',
 };
 
@@ -521,6 +605,7 @@ try {
     Object.assign(S, p);
     if (p.income) INCOME = p.income;
     if (p.sections) SECTIONS = p.sections;
+    if (p.invVehicles) INV_VEHICLES = p.invVehicles;
   }
 } catch(e) {}
 
@@ -535,6 +620,7 @@ function save() {
     localStorage.setItem('sams_v3', JSON.stringify({
       ...S, income:INCOME,
       sections: SECTIONS.map(s=>({...s,items:s.items.map(i=>({...i}))})),
+      invVehicles: INV_VEHICLES.map(v=>({...v})),
     }));
   } catch(e) {}
 }
@@ -546,9 +632,26 @@ const fmt = n => Math.round(n).toLocaleString();
 const fmtD = n => parseFloat(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
 function totalBudget() { return SECTIONS.reduce((a,s)=>a+s.items.reduce((b,i)=>b+i.b,0),0); }
 function secBudget(id) { return SECTIONS.find(s=>s.id===id)?.items.reduce((a,i)=>a+i.b,0)||0; }
-function secActual(id) { const sec=SECTIONS.find(s=>s.id===id); return sec?sec.items.reduce((a,i)=>a+(S.actuals[id+'_'+i.n]||0),0):0; }
+function secActual(id) {
+  const sec = SECTIONS.find(s=>s.id===id);
+  const budgetTotal = sec ? sec.items.reduce((a,i)=>a+(S.actuals[id+'_'+i.n]||0),0) : 0;
+  // Add daily expenses whose category maps to this section
+  const dailyMapped = S.dailyExpenses
+    .filter(e => CAT_TO_SECTION[e.cat||'other'] === id)
+    .reduce((a,e) => a+e.amount, 0);
+  return budgetTotal + dailyMapped;
+}
+// Daily expenses that have NO section mapping (cat='other' with null mapping)
+function unmappedDailyTotal() {
+  return S.dailyExpenses
+    .filter(e => CAT_TO_SECTION[e.cat||'other'] === null)
+    .reduce((a,e) => a+e.amount, 0);
+}
 function budgetActualsTotal() { return Object.values(S.actuals).reduce((a,v)=>a+v,0); }
 function dailyTotal() { return S.dailyExpenses.reduce((a,e)=>a+e.amount,0); }
+// totalSpent = budget actuals + ALL daily expenses (no double-count)
+// secActual() includes mapped daily per-section for ring display only
+// For the global balance we use budget actuals + full daily total
 function totalSpent() { return budgetActualsTotal()+dailyTotal(); }
 function balance() { return INCOME - totalSpent(); }
 function todayStr() { return new Date().toISOString().slice(0,10); }
@@ -656,154 +759,212 @@ function render() {
   else if(S.tab==='daily') c.innerHTML=renderDaily();
   else if(S.tab==='invest') c.innerHTML=renderInvest();
   else if(S.tab==='plan') c.innerHTML=renderPlan();
-  const bal=balance();
-  const hb=document.getElementById('hdr-bal');
-  if(hb){hb.textContent='₵'+fmt(bal);hb.style.color=bal>=0?'#F9A825':'#EF5350';}
+
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===S.tab));
   updateAlert();
 }
 function goTab(t){S.tab=t;S.planDrop=false;save();render();const c=document.getElementById('content');if(c)c.scrollTop=0;}
 
 // ═══════════════════════════════════════
-// OVERVIEW TAB
+// OVERVIEW TAB — Redesigned
 // ═══════════════════════════════════════
 function renderOverview() {
-  const tb=totalBudget(),ts=totalSpent(),bal=balance();
+  const tb=totalBudget(), ts=totalSpent(), bal=balance();
   const inv=INV_VEHICLES.reduce((a,i)=>a+i.monthly*S.invMonth,0);
   const gPct=Math.min(inv/10000*100,100);
   const daily=dailyTotal();
+  const spentPct=INCOME>0?Math.min(ts/INCOME*100,100):0;
 
+  // ── HERO CARD ──────────────────────────────────────────────
+  const balCol = bal>=0?'#F9A825':'#EF5350';
   let html=`
-  <!-- Month header + reset -->
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
-    <div>
-      <div style="font-size:12px;font-weight:700;color:var(--gold)">${S.currentMonthLabel}</div>
-      <div style="font-size:10px;color:var(--muted)">Current month</div>
+  <div class="hero-card">
+    <div class="hero-month-row">
+      <div>
+        <div class="hero-month-label">${S.currentMonthLabel}</div>
+      </div>
+      <button class="hero-new-month-btn" onclick="openResetModal()">📅 New Month</button>
     </div>
-    <button onclick="openResetModal()" style="background:rgba(249,168,37,0.1);border:1px solid rgba(249,168,37,0.3);border-radius:9px;padding:7px 12px;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">📅 New Month</button>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="hero-balance-label">Remaining Balance</div><button onclick="openIncomeEdit()" style="background:rgba(249,168,37,0.1);border:1px solid rgba(249,168,37,0.25);border-radius:7px;padding:3px 9px;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">✏️ Income</button></div>
+    <div class="hero-balance-value" style="color:${balCol}">₵${fmt(Math.abs(bal))}</div>
+
+    <div class="hero-prog-row">
+      <div class="hero-prog-label">
+        <span>₵${fmt(ts)} spent</span>
+        <span>${Math.round(spentPct)}% of income</span>
+      </div>
+      ${pb(ts, INCOME, balCol, 6)}
+    </div>
+
+    <div class="hero-stats-row">
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:#4CAF50">₵${fmt(INCOME)}</div>
+        <div class="hero-stat-lbl">Income</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:#42A5F5">₵${fmt(tb)}</div>
+        <div class="hero-stat-lbl">Budgeted</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:#F9A825">₵${fmt(ts)}</div>
+        <div class="hero-stat-lbl">Spent</div>
+      </div>
+    </div>
   </div>
 
-  <!-- KPIs -->
-  <div class="kpi-grid">
-    ${[
-      {lbl:'Monthly Income',val:INCOME,color:'#4CAF50',icon:'💰'},
-      {lbl:'Total Budgeted',val:tb,color:'#42A5F5',icon:'📋'},
-      {lbl:'Total Spent',val:ts,color:ts>tb?'#EF5350':'#F9A825',icon:'💸'},
-      {lbl:'Live Balance',val:bal,color:bal>=0?'#F9A825':'#EF5350',icon:'💵',glow:true},
-    ].map(k=>`<div class="kpi-card${k.glow?' glow':''}"><div class="kpi-icon">${k.icon}</div><div class="kpi-val" style="color:${k.color}">₵${fmt(k.val)}</div><div class="kpi-lbl">${k.lbl}</div></div>`).join('')}
+  <!-- ── QUICK ACTION ROW ───────────────────────────────── -->
+  <div class="quick-grid">
+    <div class="quick-card" onclick="goTab('invest')">
+      <div class="quick-card-ico">📈</div>
+      <div>
+        <div class="quick-card-val" style="color:#F9A825">₵${fmt(inv)}</div>
+        <div class="quick-card-lbl">Invested · ${Math.round(gPct)}% goal</div>
+      </div>
+    </div>
+    <div class="quick-card" onclick="goTab('daily')">
+      <div class="quick-card-ico">🧾</div>
+      <div>
+        <div class="quick-card-val" style="color:#FFA726">₵${fmt(daily)}</div>
+        <div class="quick-card-lbl">${S.dailyExpenses.length} daily expenses</div>
+      </div>
+    </div>
   </div>
 
-  <!-- Category rings overview -->
-  <div class="card">
-    <div class="card-title">Budget by Category</div>
+  <!-- ── CATEGORY PULSE STRIP ──────────────────────────── -->
+  <div class="pulse-strip">
     ${SECTIONS.map(s=>{
-      const sb=secBudget(s.id),sa=secActual(s.id),pct=Math.round(sb/INCOME*100);
-      const diff=sb-sa;
+      const sb=secBudget(s.id), sa=secActual(s.id);
       const usePct=sb>0?Math.min(sa/sb*100,100):0;
-      const r=28,circ=2*Math.PI*r,dash=circ*(usePct/100),gap=circ-dash;
-      const over=sa>sb&&sa>0;
-      const near=sa>=sb*0.8&&sa<sb&&sa>0;
-      const alertDot=over?`<span class="alert-dot" style="background:#EF5350"></span>`:near?`<span class="alert-dot" style="background:#F9A825"></span>`:'';
-      return `<div class="sec-row">
-        <div class="sec-l">
-          <div class="ring-wrap" style="width:62px;height:62px;flex-shrink:0">
-            <svg class="ring-svg" width="62" height="62" viewBox="0 0 70 70">
-              <circle class="ring-bg" cx="35" cy="35" r="${r}"/>
-              <circle class="ring-fg" cx="35" cy="35" r="${r}" stroke="${over?'#EF5350':s.color}"
-                stroke-dasharray="${dash} ${gap}" stroke-dashoffset="0"/>
-            </svg>
-            <div class="ring-label"><div class="ring-pct" style="color:${over?'#EF5350':s.color}">${Math.round(usePct)}%</div><div class="ring-sub">${s.icon}</div></div>
-          </div>
-          <div>
-            <div class="sec-name">${s.label}${alertDot}</div>
-            <div class="sec-sub">₵${fmt(sb)} · ${pct}% income</div>
-            ${sa>0?`<div style="font-size:10px;color:${diff>=0?'#4CAF50':'#EF5350'};margin-top:1px">${diff>=0?'₵'+fmt(diff)+' left':'₵'+fmt(Math.abs(diff))+' over'}</div>`:''}
-          </div>
+      const over=sa>sb&&sa>0, near=sa>=sb*0.8&&sa<sb&&sa>0;
+      const r=11, circ=2*Math.PI*r, dash=circ*(usePct/100), gap=circ-dash;
+      const strokeCol=over?'#EF5350':near?'#F9A825':s.color;
+      return `<div class="pulse-chip${over?' over':near?' near':''}" onclick="goTab('budget')">
+        <span class="pulse-chip-ico">${s.icon}</span>
+        <div class="pulse-chip-info">
+          <span class="pulse-chip-name">${s.label.split(' ')[0]}</span>
+          <span class="pulse-chip-pct" style="color:${strokeCol}">${Math.round(usePct)}%</span>
         </div>
-        <div class="sec-r">
-          <div class="sec-amt" style="color:${s.color}">₵${fmt(sa||0)}</div>
-          <div style="font-size:10px;color:var(--muted)">spent</div>
-        </div>
+        <svg class="pulse-chip-arc ring-svg" viewBox="0 0 28 28">
+          <circle class="ring-bg" cx="14" cy="14" r="${r}" stroke-width="3.5"/>
+          <circle class="ring-fg" cx="14" cy="14" r="${r}" stroke="${strokeCol}"
+            stroke-dasharray="${dash} ${gap}" stroke-width="3.5" stroke-dashoffset="0"/>
+        </svg>
       </div>`;
     }).join('')}
   </div>
 
-  <!-- Spending bar -->
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px">
-      <div class="card-title" style="margin:0">Spending Mix</div>
-      <div style="font-size:11px;color:var(--muted)">₵${fmt(ts)} of ₵${fmt(INCOME)}</div>
-    </div>
-    <div style="display:flex;height:13px;border-radius:99px;overflow:hidden;gap:1px">
-      ${SECTIONS.map(s=>`<div style="width:${secBudget(s.id)/INCOME*100}%;background:${s.color};opacity:0.82" title="${s.label}"></div>`).join('')}
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:5px 11px;margin-top:9px">
-      ${SECTIONS.map(s=>`<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)"><div style="width:7px;height:7px;border-radius:2px;background:${s.color}"></div>${s.icon} ${s.label}</div>`).join('')}
+  <!-- ── CATEGORIES COLLAPSIBLE ─────────────────────────── -->
+  <div class="ov-coll${S.ovColls.cats?' open':''}">
+    <button class="ov-coll-hdr" onclick="togOvColl('cats')">
+      <div class="ov-coll-hdr-l">
+        <span style="font-size:16px">📊</span>
+        <div>
+          <div class="ov-coll-ttl">Budget Breakdown</div>
+          <div class="ov-coll-sub">${SECTIONS.filter(s=>secActual(s.id)>0).length} of ${SECTIONS.length} categories active</div>
+        </div>
+      </div>
+      <span class="ov-coll-chev">▾</span>
+    </button>
+    <div class="ov-coll-body">
+      <div class="ov-coll-inner">
+        <div class="cat-ring-grid">
+          ${SECTIONS.map(s=>{
+            const sb=secBudget(s.id), sa=secActual(s.id);
+            const usePct=sb>0?Math.min(sa/sb*100,100):0;
+            const over=sa>sb&&sa>0, near=sa>=sb*0.8&&sa<sb&&sa>0;
+            const r=16, circ=2*Math.PI*r, dash=circ*(usePct/100), gap=circ-dash;
+            const strokeCol=over?'#EF5350':near?'#F9A825':s.color;
+            return `<div class="cat-ring-cell${over?' over':near?' near':''}" onclick="goTab('budget')">
+              ${over?`<div class="cat-alert-pip" style="background:#EF5350"></div>`:near?`<div class="cat-alert-pip" style="background:#F9A825"></div>`:''}
+              <div class="ring-wrap" style="width:44px;height:44px">
+                <svg class="ring-svg" width="44" height="44" viewBox="0 0 40 40">
+                  <circle class="ring-bg" cx="20" cy="20" r="${r}" stroke-width="4.5"/>
+                  <circle class="ring-fg" cx="20" cy="20" r="${r}" stroke="${strokeCol}"
+                    stroke-dasharray="${dash} ${gap}" stroke-width="4.5" stroke-dashoffset="0"/>
+                </svg>
+                <div class="ring-label">
+                  <div style="font-size:13px">${s.icon}</div>
+                </div>
+              </div>
+              <div class="cat-ring-name">${s.label.replace(' & ',' &​').split(' ')[0]}</div>
+              <div class="cat-ring-amt" style="color:${strokeCol}">${Math.round(usePct)}%</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <!-- Spending bar -->
+        <div style="margin-top:4px">
+          <div style="display:flex;height:10px;border-radius:99px;overflow:hidden;gap:1px;margin-bottom:8px">
+            ${SECTIONS.map(s=>`<div style="width:${secBudget(s.id)/INCOME*100}%;background:${s.color};opacity:0.82"></div>`).join('')}
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px 10px">
+            ${SECTIONS.map(s=>`<div style="display:flex;align-items:center;gap:3px;font-size:10px;color:var(--muted)"><div style="width:6px;height:6px;border-radius:2px;background:${s.color}"></div>${s.icon} ${s.label.split(' ')[0]}</div>`).join('')}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Investment goal ring -->
-  <div class="card glow">
-    <div class="card-title">Investment Goal</div>
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:13px">
-      <div class="ring-wrap" style="width:90px;height:90px;flex-shrink:0">
-        ${(()=>{const r=38,circ=2*Math.PI*r,dash=circ*(gPct/100),gap=circ-dash;
-        return `<svg class="ring-svg" width="90" height="90" viewBox="0 0 90 90">
-          <circle class="ring-bg" cx="45" cy="45" r="${r}" stroke-width="10"/>
-          <circle class="ring-fg" cx="45" cy="45" r="${r}" stroke="${gPct>=100?'#4CAF50':'#F9A825'}"
-            stroke-dasharray="${dash} ${gap}" stroke-width="10" stroke-dashoffset="0"/>
-        </svg>
-        <div class="ring-label"><div style="font-size:18px;font-weight:900;color:${gPct>=100?'#4CAF50':'#F9A825'}">${Math.round(gPct)}%</div><div style="font-size:9px;color:var(--muted)">goal</div></div>`})()}
-      </div>
-      <div style="flex:1">
-        <div style="font-size:24px;font-weight:900;color:#F9A825;letter-spacing:-1px">₵${fmt(inv)}</div>
-        <div style="font-size:11px;color:var(--muted)">by month ${S.invMonth}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:3px">Target: ₵10,000</div>
-        ${gPct>=100?`<div style="color:#4CAF50;font-weight:800;font-size:13px;margin-top:4px">🎉 Goal achieved!</div>`:''}
-      </div>
-    </div>
-    <div class="slider-row">
-      <span style="font-size:12px;color:var(--muted)">Simulate month <strong style="color:#F9A825">${S.invMonth}</strong></span>
-      <span style="font-size:11px;color:#F9A825">₵${fmt(10000-inv)} to go</span>
-    </div>
-    <input type="range" min="1" max="6" value="${S.invMonth}" oninput="setInvMo(this.value)">
-    <div class="m-ticks">${[1,2,3,4,5,6].map(m=>`<span class="m-tick${m==S.invMonth?' on':''}" onclick="setInvMo(${m})">M${m}</span>`).join('')}</div>
-  </div>
-
-  <!-- Daily expenses summary if any -->
+  <!-- ── DAILY EXPENSES COLLAPSIBLE ────────────────────── -->
   ${S.dailyExpenses.length>0?`
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
-      <div class="card-title" style="margin:0">Recent Daily Expenses</div>
-      <button onclick="goTab('daily')" style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3);border-radius:8px;padding:5px 10px;color:#F9A825;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">View All →</button>
-    </div>
-    ${[...S.dailyExpenses].reverse().slice(0,3).map(e=>`
-    <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #1a332025">
-      <div style="width:30px;height:30px;border-radius:8px;background:${CAT_COLORS[e.cat]||'#F9A825'}22;border:1px solid ${CAT_COLORS[e.cat]||'#F9A825'}40;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${CAT_ICONS[e.cat]||'🧾'}</div>
-      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.desc}</div><div style="font-size:11px;color:var(--muted)">${fmtDate(e.date)} · ${e.cat||'other'}</div></div>
-      <div style="font-size:14px;font-weight:800;color:#F9A825">₵${fmt(e.amount)}</div>
-    </div>`).join('')}
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;padding-top:7px;border-top:1px solid #1a3320">
-      <span style="font-size:12px;color:var(--muted)">${S.dailyExpenses.length} entries this month</span>
-      <span style="font-size:13px;font-weight:800;color:#F9A825">₵${fmt(daily)} total</span>
+  <div class="ov-coll${S.ovColls.daily?' open':''}">
+    <button class="ov-coll-hdr" onclick="togOvColl('daily')">
+      <div class="ov-coll-hdr-l">
+        <span style="font-size:16px">🧾</span>
+        <div>
+          <div class="ov-coll-ttl">Recent Expenses</div>
+          <div class="ov-coll-sub">${S.dailyExpenses.length} entries · ₵${fmt(daily)} total</div>
+        </div>
+      </div>
+      <span class="ov-coll-chev">▾</span>
+    </button>
+    <div class="ov-coll-body">
+      <div class="ov-coll-inner">
+        ${[...S.dailyExpenses].reverse().slice(0,5).map(e=>`
+        <div style="display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #1a332022">
+          <div style="width:30px;height:30px;border-radius:8px;background:${CAT_COLORS[e.cat]||'#F9A825'}22;border:1px solid ${CAT_COLORS[e.cat]||'#F9A825'}35;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">${CAT_ICONS[e.cat]||'🧾'}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.desc}</div>
+            <div style="font-size:10px;color:var(--muted)">${fmtDate(e.date)} · ${e.cat||'other'}</div>
+          </div>
+          <div style="font-size:13px;font-weight:800;color:#F9A825;flex-shrink:0">₵${fmt(e.amount)}</div>
+        </div>`).join('')}
+        <button onclick="goTab('daily')" style="width:100%;margin-top:10px;padding:9px;background:rgba(249,168,37,0.1);border:1px solid rgba(249,168,37,0.25);border-radius:9px;color:#F9A825;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">View all expenses →</button>
+      </div>
     </div>
   </div>`:''}
 
-  <!-- Monthly history -->
+  <!-- ── HISTORY COLLAPSIBLE ───────────────────────────── -->
   ${S.monthHistory.length>0?`
-  <div class="card">
-    <div class="card-title">Monthly History</div>
-    ${S.monthHistory.slice().reverse().map(h=>{
-      const saved=h.income-(h.totalSpent||0);
-      return `<div class="hist-card">
-        <div><div class="hist-month">${h.month}</div><div style="font-size:11px;color:var(--muted)">Income: ₵${fmt(h.income)}</div></div>
-        <div class="hist-stats">
-          <div class="hist-stat"><div class="hist-stat-val" style="color:#EF5350">₵${fmt(h.totalSpent||0)}</div><div class="hist-stat-lbl">Spent</div></div>
-          <div class="hist-stat"><div class="hist-stat-val" style="color:${saved>=0?'#4CAF50':'#EF5350'}">₵${fmt(Math.abs(saved))}</div><div class="hist-stat-lbl">${saved>=0?'Saved':'Over'}</div></div>
+  <div class="ov-coll${S.ovColls.history?' open':''}">
+    <button class="ov-coll-hdr" onclick="togOvColl('history')">
+      <div class="ov-coll-hdr-l">
+        <span style="font-size:16px">📅</span>
+        <div>
+          <div class="ov-coll-ttl">Monthly History</div>
+          <div class="ov-coll-sub">${S.monthHistory.length} month${S.monthHistory.length!==1?'s':''} archived</div>
         </div>
-        <span class="hist-badge ${saved>=0?'saved-pos':'saved-neg'}">${saved>=0?'+₵'+fmt(saved):'-₵'+fmt(Math.abs(saved))}</span>
-      </div>`;
-    }).join('')}
+      </div>
+      <span class="ov-coll-chev">▾</span>
+    </button>
+    <div class="ov-coll-body">
+      <div class="ov-coll-inner">
+        ${S.monthHistory.slice().reverse().map(h=>{
+          const saved=h.income-(h.totalSpent||0);
+          const savePct=h.income>0?Math.round(Math.abs(saved)/h.income*100):0;
+          return `<div class="hist-card">
+            <div><div class="hist-month">${h.month}</div><div style="font-size:11px;color:var(--muted)">₵${fmt(h.income)} income</div></div>
+            <div class="hist-stats">
+              <div class="hist-stat"><div class="hist-stat-val" style="color:#EF5350">₵${fmt(h.totalSpent||0)}</div><div class="hist-stat-lbl">Spent</div></div>
+              <div class="hist-stat"><div class="hist-stat-val" style="color:${saved>=0?'#4CAF50':'#EF5350'}">₵${fmt(Math.abs(saved))}</div><div class="hist-stat-lbl">${saved>=0?'Saved':'Over'}</div></div>
+            </div>
+            <span class="hist-badge ${saved>=0?'saved-pos':'saved-neg'}">${saved>=0?'+'+savePct+'%':'-'+savePct+'%'}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
   </div>`:''}`;
 
   return html;
@@ -813,10 +974,9 @@ function renderOverview() {
 // BUDGET TAB
 // ═══════════════════════════════════════
 function renderBudget() {
-  const tb=totalBudget(),ba=budgetActualsTotal(),bal=INCOME-ba;
+  const tb=totalBudget(),ba=budgetActualsTotal();
   let html=`
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
-    <div style="font-size:12px;color:var(--muted)">Tap 💙 budget to edit · tap actual to enter spent</div>
+  <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:11px">
     <div style="background:rgba(249,168,37,0.15);border:1px solid rgba(249,168,37,0.3);border-radius:9px;padding:5px 11px;font-size:13px;font-weight:700;color:#F9A825">₵${fmt(balance())}</div>
   </div>`;
 
@@ -857,16 +1017,17 @@ function renderBudget() {
     </div>`;
   });
 
+  const mappedD=dailyTotal()-unmappedDailyTotal(), unmappedD=unmappedDailyTotal();
   html+=`<div class="grand-bar">
     <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:3px">📊 TOTAL EXPENSES</div>
     <div class="gt-row"><span class="gt-lbl">Budgeted</span><span class="gt-val" style="color:#F9A825">₵${fmt(tb)}</span></div>
-    <div class="gt-row"><span class="gt-lbl">Actual (budget items)</span><span class="gt-val" style="color:var(--text)">₵${fmt(ba)}</span></div>
-    <div class="gt-row"><span class="gt-lbl">Daily Expenses</span><span class="gt-val" style="color:#FFA726">₵${fmt(dailyTotal())}</span></div>
+    <div class="gt-row"><span class="gt-lbl">Budget Entries</span><span class="gt-val" style="color:var(--text)">₵${fmt(ba)}</span></div>
+    <div class="gt-row"><span class="gt-lbl">Daily → Categories</span><span class="gt-val" style="color:#FFA726">₵${fmt(mappedD)}</span></div>
+    ${unmappedD>0?`<div class="gt-row"><span class="gt-lbl" style="color:#7a9e7a">Daily (unlinked)</span><span class="gt-val" style="color:#7a9e7a">₵${fmt(unmappedD)}</span></div>`:''}
     <div style="height:1px;background:#1a3320;margin:4px 0"></div>
     <div class="gt-row"><span style="font-size:12px;color:#fff;font-weight:700">Remaining Balance</span>
       <span style="font-size:21px;font-weight:900;color:${balance()>=0?'#F9A825':'#EF5350'}">₵${fmt(balance())}</span></div>
   </div>
-  <!-- Export CSV -->
   <button onclick="exportCSV()" style="width:100%;margin-top:10px;padding:12px;border-radius:11px;background:rgba(66,165,245,0.1);border:1px solid rgba(66,165,245,0.3);color:#42A5F5;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px">📥 Export to CSV</button>`;
   return html;
 }
@@ -895,10 +1056,16 @@ function renderDaily() {
     <div class="card-title" style="margin-bottom:12px">✦ Log New Expense</div>
     <div class="exp-field"><div class="exp-lbl">Description</div>
       <input class="exp-inp" id="exp-desc" type="text" placeholder="e.g. Lunch at Papaye" maxlength="60"></div>
-    <div class="exp-field"><div class="exp-lbl">Category</div>
+    <div class="exp-field"><div class="exp-lbl">Category <span style="color:var(--muted);font-size:10px;font-weight:400">— links to budget section</span></div>
       <div class="exp-cat-grid">
-        ${cats.map(c=>`<button class="exp-cat-btn${S.dailyExpCat===c?' sel':''}" onclick="setExpCat('${c}')">${CAT_ICONS[c]} ${c}</button>`).join('')}
+        ${cats.map(cat=>{
+          const secId=CAT_TO_SECTION[cat];
+          const sec=secId?SECTIONS.find(s=>s.id===secId):null;
+          const tip=sec?sec.icon:'';
+          return `<button class="exp-cat-btn${S.dailyExpCat===cat?' sel':''}" onclick="setExpCat('${cat}')">${CAT_ICONS[cat]} ${cat}${tip?` <span style="font-size:9px;opacity:0.7">${tip}</span>`:''}</button>`;
+        }).join('')}
       </div>
+      ${CAT_TO_SECTION[S.dailyExpCat]?`<div style="font-size:11px;color:var(--gold);margin-top:5px">↳ Will add to <strong>${SECTIONS.find(s=>s.id===CAT_TO_SECTION[S.dailyExpCat])?.label||''}</strong> budget section</div>`:`<div style="font-size:11px;color:var(--muted);margin-top:5px">↳ Not linked to a budget section</div>`}
     </div>
     <div class="exp-2col">
       <div class="exp-field"><div class="exp-lbl">Amount (₵)</div>
@@ -934,13 +1101,17 @@ function renderInvest() {
   const inv=INV_VEHICLES.reduce((a,i)=>a+i.monthly*S.invMonth,0);
   const gPct=Math.min(inv/10000*100,100);
   return `
-  <div class="inv-grid">${INV_VEHICLES.map(v=>`
-    <div class="inv-card">
-      <div class="inv-name">${v.name}</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:9px;text-align:right">Tap any card to edit ✏️</div>
+  <div class="inv-grid">${INV_VEHICLES.map((v,idx)=>`
+    <div class="inv-card" onclick="openInvOv(${idx})" style="cursor:pointer;transition:all 0.15s" ontouchstart="this.style.opacity=0.8" ontouchend="this.style.opacity=1">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+        <div class="inv-name">${v.name}</div>
+        <span style="font-size:10px;color:var(--muted);opacity:0.6">✏️</span>
+      </div>
       <div class="inv-val" style="color:${v.color}">₵${fmt(v.monthly*S.invMonth)}</div>
-      <div class="inv-sub">₵${fmt(v.monthly)}/mo × M${S.invMonth}</div>
-      ${pb(v.monthly*S.invMonth,v.monthly*6,v.color,5)}
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px"><span>M${S.invMonth}</span><span>6-Mo: ₵${fmt(v.monthly*6)}</span></div>
+      <div class="inv-sub"><span class="bud-editable" style="font-size:10px;padding:2px 6px">₵${fmt(v.monthly)}/mo</span> × M${S.invMonth}</div>
+      <div style="margin:6px 0 3px">${pb(v.monthly*S.invMonth,v.monthly*6,v.color,5)}</div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted)"><span>M${S.invMonth}</span><span>6-Mo: ₵${fmt(v.monthly*6)}</span></div>
     </div>`).join('')}
   </div>
   <div class="card glow">
@@ -1119,6 +1290,7 @@ function fmtDate(d){
 // ═══════════════════════════════════════
 function setInvMo(v){S.invMonth=parseInt(v);save();render();}
 function togColl(k){S.colls[k]=!S.colls[k];render();}
+function togOvColl(k){S.ovColls[k]=!S.ovColls[k];save();render();}
 function togglePlanDrop(){S.planDrop=!S.planDrop;render();if(S.planDrop)setTimeout(()=>{const c=document.getElementById('content');if(c)c.scrollTop=0;},10);}
 function setPlanYr(y){S.planYear=y;render();}
 function selPlanMo(i){S.planIdx=i;S.planDrop=false;S.planYear=null;save();render();}
@@ -1166,8 +1338,9 @@ function saveBudItem(){
     if(old!==name){const ok=_bSid+'_'+old,nk=_bSid+'_'+name;if(S.actuals[ok]!==undefined){S.actuals[nk]=S.actuals[ok];delete S.actuals[ok];}}
     sec.items[_bIdx]={n:name,b:amt,notes};
   }
+  const _toastMode=_bMode;
   save();document.getElementById('bud-ov').classList.remove('open');_bSid=null;_bIdx=null;_bMode=null;render();vib(30);
-  showToast(_bMode==='add'?'✅ Item added':'✅ Item updated');
+  showToast(_toastMode==='add'?'✅ Item added':'✅ Item updated');
 }
 function delItem(sid,idx){
   const sec=SECTIONS.find(s=>s.id===sid);if(!sec||!sec.items[idx])return;
@@ -1234,8 +1407,35 @@ function exportCSV(){
   showToast('📥 CSV exported!');
 }
 
-// Plan tab
-function togglePlanDrop(){S.planDrop=!S.planDrop;render();}
+// Investment vehicle edit
+let _invIdx = null;
+function openInvOv(idx) {
+  _invIdx = idx;
+  const v = INV_VEHICLES[idx];
+  document.getElementById('inv-ov-title').textContent = 'Edit ' + v.name;
+  document.getElementById('inv-name-inp').value = v.name;
+  document.getElementById('inv-amt-inp').value = v.monthly;
+  document.getElementById('inv-ov').classList.add('open');
+  setTimeout(()=>document.getElementById('inv-name-inp').focus(), 350);
+  vib(20);
+}
+function closeInvOv(e) {
+  if (e && e.target !== document.getElementById('inv-ov')) return;
+  document.getElementById('inv-ov').classList.remove('open');
+  _invIdx = null;
+}
+function saveInvVehicle() {
+  const name = document.getElementById('inv-name-inp').value.trim();
+  const amt  = parseFloat(document.getElementById('inv-amt-inp').value);
+  if (!name || !amt || amt <= 0) return;
+  INV_VEHICLES[_invIdx] = { ...INV_VEHICLES[_invIdx], name, monthly: amt };
+  document.getElementById('inv-ov').classList.remove('open');
+  _invIdx = null;
+  save(); render(); vib(30);
+  showToast('✅ Vehicle updated');
+}
+document.getElementById('inv-name-inp').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('inv-amt-inp').focus(); });
+document.getElementById('inv-amt-inp').addEventListener('keydown', e => { if(e.key==='Enter') saveInvVehicle(); if(e.key==='Escape') closeInvOv(); });
 
 // ═══════════════════════════════════════
 // PIN AUTH
